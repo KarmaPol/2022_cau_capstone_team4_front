@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import "./Layout.css";
+import "./Appbar.css";
 import icon from "../img/paint in_.png";
 
 export default function Appbar() {
@@ -30,12 +30,7 @@ export default function Appbar() {
             margin: "auto",
           }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid container direction="row" alignItems="center">
             <Grid item xs>
               <Box display="flex" justifyContent="center">
                 <img alt="paint in" src={icon} />
@@ -71,12 +66,12 @@ export default function Appbar() {
                 챌린지
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <Box display="flex" justifyContent="center" width="250px">
+            <Grid item xs>
+              <Box display="flex" justifyContent="flex-end" width="250px">
                 <TextField
                   className="inputRounded"
                   placeholder="검색"
-                  fullWidth
+                  // fullWidth
                   size="small"
                 ></TextField>
               </Box>
@@ -88,13 +83,13 @@ export default function Appbar() {
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                <Avatar></Avatar>
-                <Typography
-                  variant="h7"
-                  color="black"
-                  component="div"
-                  align="flex-end"
-                >
+                <Avatar
+                  sx={{
+                    width: "36px",
+                    height: "36px",
+                  }}
+                ></Avatar>
+                <Typography variant="subtitle1" color="black" align="right">
                   userID
                 </Typography>
               </Stack>

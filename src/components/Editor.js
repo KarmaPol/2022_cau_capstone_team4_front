@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box } from "@mui/material";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import "./Editor.css";
 
 export default function MyEditor() {
+  useEffect(() => {}, []);
   return (
     <Box
       sx={{
