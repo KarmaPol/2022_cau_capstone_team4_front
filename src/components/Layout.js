@@ -76,7 +76,7 @@ export default function Appbar() {
                 <TextField
                   className="inputRounded"
                   placeholder="검색"
-                  // fullWidth
+                  fullWidth
                   size="small"
                 ></TextField>
               </Box>
@@ -85,7 +85,7 @@ export default function Appbar() {
               <Stack
                 spacing={1}
                 direction="row"
-                justifyContent="center"
+                justifyContent="flex-end"
                 alignItems="center"
               >
                 <Avatar></Avatar>
@@ -93,7 +93,7 @@ export default function Appbar() {
                   variant="h7"
                   color="black"
                   component="div"
-                  align="center"
+                  align="flex-end"
                 >
                   userID
                 </Typography>
