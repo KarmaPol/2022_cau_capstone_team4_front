@@ -1,8 +1,9 @@
 import React from "react";
-import Commission_Q from "./Commission_Q";
-import Commission_A from "./Commission_A";
-import Commission_page from "./Commission_page";
+import Commission_Q from "./pages/Commission_Q";
+import Commission_A from "./pages/Commission_A";
+import Commission_page from "./pages/Commission_page";
+import Sign_in from "./pages/Sign_in";
 
 function App() {}
 
-export default Commission_page;
+export default Sign_in;

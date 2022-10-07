@@ -9,9 +9,9 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import Appbar from "./components/Appbar";
-import "./App.css";
-import MyEditor from "./components/Editor";
+import Appbar from "../components/Appbar";
+import "../App.css";
+import MyEditor from "../components/Editor";
 
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");

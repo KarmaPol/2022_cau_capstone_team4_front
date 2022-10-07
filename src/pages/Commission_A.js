@@ -9,10 +9,10 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import Appbar from "./components/Appbar";
-import "./App.css";
-import MyEditor from "./components/Editor";
-import Line from "./components/Line";
+import Appbar from "../components/Appbar";
+import "../App.css";
+import MyEditor from "../components/Editor";
+import Line from "../components/Line";
 
 function Commission_A() {
   useEffect(() => {}, []);
