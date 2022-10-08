@@ -38,9 +38,6 @@ function Commission_A() {
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
-            border: 0.5,
-            borderColor: "grey.400",
-            borderRadius: "10px",
           }}
         >
           <Stack

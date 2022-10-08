@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -18,6 +18,18 @@ import "../App.css";
 import "./Sign_in.css";
 
 export default function Sign_in() {
+  const [account, setAccount] = useState({
+    userID: "",
+    userPW: "",
+  });
+
+  const onChangeAccount = (e) => {
+    setAccount({
+      ...account,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <Container
       sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
@@ -54,16 +66,17 @@ export default function Sign_in() {
               name="userID"
               autoComplete="userID"
               autoFocus
+              onChange={onChangeAccount}
             />
             <TextField
               className="inputRounded2"
               required
               fullWidth
-              id="userID"
+              id="userPW"
               label="비밀번호"
-              name="userID"
+              name="userPW"
               autoComplete="userID"
-              autoFocus
+              onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
               <Button type="submit" fullWidth variant="contained">
