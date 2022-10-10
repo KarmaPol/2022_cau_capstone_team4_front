@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -110,14 +111,16 @@ function Commission_page() {
             <Comment likeAvailabilty={true}></Comment>
             {/* 답변 글 끝 */}
             <Line />
-            <Button
-              variant="outlined"
-              sx={{
-                width: "100px",
-              }}
-            >
-              답변작성
-            </Button>
+            <Link to="/answer" style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "100px",
+                }}
+              >
+                답변작성
+              </Button>
+            </Link>
           </Stack>
         </Box>
       </Box>

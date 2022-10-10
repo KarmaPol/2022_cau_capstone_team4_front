@@ -6,11 +6,13 @@ import {
   TextField,
   Avatar,
   Stack,
+  Button,
 } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import "./Appbar.css";
 import icon from "../img/paint in_.png";
+import { Link } from "react-router-dom";
 
 export default function Appbar() {
   return (
@@ -83,7 +85,7 @@ export default function Appbar() {
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                <Avatar
+                {/* <Avatar
                   sx={{
                     width: "36px",
                     height: "36px",
@@ -91,7 +93,10 @@ export default function Appbar() {
                 ></Avatar>
                 <Typography variant="subtitle1" color="black" align="right">
                   userID
-                </Typography>
+                </Typography> */}
+                <Link to="/signin" style={{ textDecoration: "none" }}>
+                  <Button variant="outlined">로그인</Button>
+                </Link>
               </Stack>
             </Grid>
           </Grid>

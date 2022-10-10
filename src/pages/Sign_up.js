@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Avatar,
   Button,
   Grid,
+  Link,
   TextField,
   Checkbox,
   Container,
@@ -17,7 +17,7 @@ import Line from "../components/Line";
 import "../App.css";
 import "./Sign_in.css";
 
-export default function Sign_in() {
+export default function Sign_up() {
   const [account, setAccount] = useState({
     userID: "",
     userPW: "",
@@ -65,8 +65,16 @@ export default function Sign_in() {
               id="userID"
               label="아이디"
               name="userID"
-              autoComplete="userID"
               autoFocus
+              onChange={onChangeAccount}
+            />
+            <TextField
+              className="inputRounded2"
+              required
+              fullWidth
+              id="nickName"
+              label="닉네임"
+              name="nickName"
               onChange={onChangeAccount}
             />
             <TextField
@@ -77,29 +85,25 @@ export default function Sign_in() {
               label="비밀번호"
               type="password"
               name="userPW"
-              autoComplete="userPW"
+              onChange={onChangeAccount}
+            />
+            <TextField
+              className="inputRounded2"
+              required
+              fullWidth
+              id="userPWConfirm"
+              label="비밀번호 확인"
+              type="password"
+              name="userPWConfirm"
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
               <Button type="submit" fullWidth variant="contained">
-                로그인
+                회원가입
               </Button>
-              <Link to="/signup" style={{ textDecoration: "none" }}>
-                <Button type="submit" fullWidth variant="outlined">
-                  회원가입
-                </Button>
-              </Link>
             </Stack>
             <Stack spacing={1} width="100%">
-              <Line />
-              <Grid container>
-                <Grid item xs>
-                  <Link>아이디 찾기</Link>
-                </Grid>
-                <Grid item>
-                  <Link>비밀번호 찾기</Link>
-                </Grid>
-              </Grid>
+              {/* <Line /> */}
             </Stack>
           </Stack>
         </Box>
