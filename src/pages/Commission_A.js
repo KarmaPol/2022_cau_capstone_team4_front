@@ -17,6 +17,12 @@ import Line from "../components/Line";
 function Commission_A() {
   useEffect(() => {}, []);
 
+  const [ansText, setAnsText] = useState("");
+
+  function onChangeAnsText(_data) {
+    setAnsText(_data);
+  }
+
   return (
     <Container
       sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
@@ -75,7 +81,8 @@ function Commission_A() {
               <p>커미션 설명</p>
             </Box>
             <Line />
-            <MyEditor />
+            <MyEditor onChangeFunc={onChangeAnsText} />
+            {console.log(ansText)}
             <Box
               sx={{
                 color: "primary.main",

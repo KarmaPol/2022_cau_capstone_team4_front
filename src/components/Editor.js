@@ -4,8 +4,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import "./Editor.css";
 
-export default function MyEditor() {
-  useEffect(() => {}, []);
+export default function MyEditor(props) {
   return (
     <Box
       sx={{
@@ -22,6 +21,7 @@ export default function MyEditor() {
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
+          props.onChangeFunc(data);
           console.log({ event, editor, data });
         }}
         onBlur={(event, editor) => {

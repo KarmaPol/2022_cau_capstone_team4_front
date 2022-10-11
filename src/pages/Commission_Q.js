@@ -16,6 +16,11 @@ import MyEditor from "../components/Editor";
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
   const [commissionTags, setTags] = useState("");
+  const [commissionText, setCommissiontText] = useState("");
+
+  function onChangeCommissionText(_data) {
+    setCommissiontText(_data);
+  }
 
   useEffect(() => {}, []);
 
@@ -87,7 +92,7 @@ function Commission_Q() {
                 variant="outlined"
               ></TextField>
             </Box>
-            <MyEditor />
+            <MyEditor onChangeFunc={onChangeCommissionText} />
             <Button
               variant="outlined"
               sx={{
