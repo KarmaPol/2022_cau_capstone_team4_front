@@ -5,6 +5,7 @@ import {
   Container,
   Typography,
   Box,
+  Pagination,
   Avatar,
   Grid,
   Stack,
@@ -17,11 +18,17 @@ import Line from "../components/Line";
 
 function Commission_page() {
   const [postsData, setPostsData] = useState([]);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(9);
   const [currentPage, setCurrentPage] = useState(1);
   const [load, setLoad] = useState(false);
 
   const pageOffset = (currentPage - 1) * pageLimit;
+
+  const changePage = (v) => {
+    const nextPage = v;
+    console.log(nextPage);
+    setCurrentPage(nextPage);
+  };
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -30,16 +37,9 @@ function Commission_page() {
       );
       setPostsData(response.data);
       setLoad(true);
-      console.log(() => response.data);
     };
     fetchPostsData();
   }, []);
-
-  console.log(postsData);
-  console.log(pageOffset);
-  console.log(pageLimit);
-  console.log(postsData.slice(pageOffset, pageOffset + pageLimit));
-  console.log(load);
 
   return (
     <Container
@@ -67,10 +67,29 @@ function Commission_page() {
             borderRadius: "10px",
           }}
         >
-          {postsData.slice(pageOffset, pageOffset + pageLimit).map((post) => (
-            <div key={post.id}>{post.title}</div>
-          ))}
-          <div className="App"></div>
+          <Stack
+            spacing={3}
+            sx={{
+              mt: "25px",
+              ml: "50px",
+              width: "800px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {postsData.slice(pageOffset, pageOffset + pageLimit).map((post) => (
+              <div key={post.id}>{post.title}</div>
+            ))}
+            <Pagination
+              count={
+                postsData.length % pageLimit === 0
+                  ? parseInt(postsData.length / pageLimit)
+                  : parseInt(postsData.length / pageLimit) + 1
+              }
+              shape="rounded"
+              onChange={(e, value) => changePage(value)}
+            />
+          </Stack>
         </Box>
       </Box>
     </Container>
