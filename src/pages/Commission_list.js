@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -15,6 +14,8 @@ import {
 import Appbar from "../components/Appbar";
 import "../App.css";
 import Line from "../components/Line";
+import Bulletin from "../components/Bulletin";
+import Footer from "../components/Footer";
 
 function Commission_page() {
   const [postsData, setPostsData] = useState([]);
@@ -68,18 +69,49 @@ function Commission_page() {
           }}
         >
           <Stack
-            spacing={3}
+            spacing={2}
             sx={{
               mt: "25px",
               ml: "50px",
               width: "800px",
-              justifyContent: "center",
               alignItems: "center",
             }}
           >
-            {postsData.slice(pageOffset, pageOffset + pageLimit).map((post) => (
-              <div key={post.id}>{post.title}</div>
-            ))}
+            <Typography
+              align="left"
+              variant="h5"
+              sx={{
+                fontWeight: "bold",
+                alignSelf: "start",
+              }}
+            >
+              그림 의뢰
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid container item spacing={2}>
+                {postsData.slice(pageOffset, pageOffset + 3).map((post) => (
+                  <Grid item>
+                    <Bulletin post={post}></Bulletin>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid container item spacing={2}>
+                {postsData.slice(pageOffset + 3, pageOffset + 6).map((post) => (
+                  <Grid item>
+                    <Bulletin post={post}></Bulletin>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid container item spacing={2}>
+                {postsData.slice(pageOffset + 6, pageOffset + 9).map((post) => (
+                  <Grid item>
+                    <Bulletin post={post}></Bulletin>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Line />
+
             <Pagination
               count={
                 postsData.length % pageLimit === 0
