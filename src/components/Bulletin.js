@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import Line from "./Line";
 
 export default function Bulletin(props) {
   return (
@@ -18,8 +19,8 @@ export default function Bulletin(props) {
       sx={{
         width: "250px",
         minHeight: "450px",
-        border: 0.5,
-        borderColor: "grey.400",
+        border: 1,
+        borderColor: "grey.300",
         borderRadius: "10px",
       }}
     >
@@ -34,12 +35,29 @@ export default function Bulletin(props) {
             width: "240px",
             height: "300px",
             backgroundColor: "skyblue",
+            borderRadius: "10px",
           }}
         ></Box>
         <Link to="/page" color="black" style={{ textDecoration: "none" }}>
-          <Box>{props.post.title}</Box>
+          <Box>
+            <Typography
+              variant="subtitle1"
+              color="black"
+              component="div"
+              sx={{}}
+            >
+              {props.post.title}
+            </Typography>
+          </Box>
         </Link>
-        <Box>{props.post.userId}</Box>
+
+        <Link to="/page" color="black" style={{ textDecoration: "none" }}>
+          <Box>
+            <Typography variant="body2" color="gray" component="div" sx={{}}>
+              {props.post.userId}
+            </Typography>
+          </Box>
+        </Link>
       </Stack>
     </Box>
   );

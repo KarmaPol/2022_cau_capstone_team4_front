@@ -13,6 +13,7 @@ import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
 import Line from "../components/Line";
+import MyCanvas from "../components/MyCanvas";
 
 function Commission_A() {
   useEffect(() => {}, []);
@@ -90,7 +91,12 @@ function Commission_A() {
                 bgcolor: "skyblue",
               }}
             >
-              {/* 그림판 */}
+              <MyCanvas
+                width={800}
+                height={1000}
+                color={"black"}
+                brushRadius={8}
+              />
             </Box>
             <Button
               variant="outlined"

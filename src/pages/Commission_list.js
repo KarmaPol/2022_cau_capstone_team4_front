@@ -44,7 +44,11 @@ function Commission_page() {
 
   return (
     <Container
-      sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
+      sx={{
+        justifyContent: "center",
+        alignItems: "center",
+        width: "1000px",
+      }}
     >
       <Appbar></Appbar>
       <Box

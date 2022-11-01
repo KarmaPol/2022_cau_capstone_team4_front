@@ -34,19 +34,23 @@ export default function Appbar() {
         >
           <Grid container direction="row" alignItems="center">
             <Grid item xs>
-              <Box display="flex" justifyContent="center">
-                <img alt="paint in" src={icon} />
-              </Box>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Box display="flex" justifyContent="center">
+                  <img alt="paint in" src={icon} />
+                </Box>
+              </Link>
             </Grid>
             <Grid item xs>
-              <Typography
-                variant="h6"
-                color="black"
-                component="div"
-                align="center"
-              >
-                그림의뢰
-              </Typography>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="h6"
+                  color="black"
+                  component="div"
+                  align="center"
+                >
+                  그림의뢰
+                </Typography>
+              </Link>
             </Grid>
             <Grid item xs>
               <Typography
