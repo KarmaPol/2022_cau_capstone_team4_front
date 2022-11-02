@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -32,7 +32,7 @@ function Commission_A() {
       <Box
         sx={{
           width: 1000,
-          height: "2000px",
+          minheight: "2500px",
           backgroundColor: "white",
           margin: "0 auto",
           position: "absolute",
@@ -41,7 +41,7 @@ function Commission_A() {
         <Box
           sx={{
             width: "900px",
-            height: "1900px",
+            minHeight: "2400px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
@@ -81,23 +81,11 @@ function Commission_A() {
               {/* 원글 본문 */}
               <p>커미션 설명</p>
             </Box>
-            <Line />
+
             <MyEditor onChangeFunc={onChangeAnsText} />
-            {console.log(ansText)}
-            <Box
-              sx={{
-                color: "primary.main",
-                height: "1000px",
-                bgcolor: "skyblue",
-              }}
-            >
-              <MyCanvas
-                width={800}
-                height={1000}
-                color={"black"}
-                brushRadius={8}
-              />
-            </Box>
+
+            <MyCanvas />
+
             <Button
               variant="outlined"
               sx={{
