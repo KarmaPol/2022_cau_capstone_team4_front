@@ -11,9 +11,9 @@ function App() {
   return (
     <Routes>
       <Route path="" element={<Commission_list />} />
-      <Route path="/page" element={<Commission_page />} />
+      <Route path="/page/:id" element={<Commission_page />} />
       <Route path="/question" element={<Commission_Q />} />
-      <Route path="/answer" element={<Commission_A />} />
+      <Route path="/answer/:id" element={<Commission_A />} />
       <Route path="/signin" element={<Sign_in />} />
       <Route path="/signup" element={<Sign_up />} />
     </Routes>

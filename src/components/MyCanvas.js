@@ -16,7 +16,7 @@ import Line from "../components/Line";
 export default function MyCanvas(props) {
   const canvasRef = useRef(null);
   const [brushRad, setBrushRad] = useState(5);
-  const [brushColor, setBrushColor] = useState("#3fffff");
+  const [brushColor, setBrushColor] = useState("#000000");
   const [drawing, setDrawing] = useState();
 
   return (
@@ -33,7 +33,7 @@ export default function MyCanvas(props) {
         <CanvasDraw
           ref={canvasRef}
           canvasWidth={800}
-          canvasHeight={1000}
+          canvasHeight={800}
           brushColor={brushColor}
           brushRadius={brushRad}
           hideGrid={true}

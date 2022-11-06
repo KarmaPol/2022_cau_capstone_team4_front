@@ -9,20 +9,44 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import axios from "axios";
 import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
 import Line from "../components/Line";
 import MyCanvas from "../components/MyCanvas";
+import { Link, useParams } from "react-router-dom";
 
 function Commission_A() {
-  useEffect(() => {}, []);
-
   const [ansText, setAnsText] = useState("");
+  const [ansImg, setAnsImg] = useState();
+  const [postData, setPostData] = useState([]);
 
   function onChangeAnsText(_data) {
-    setAnsText(_data);
+    setAnsText(() => _data);
   }
+
+  const params = useParams().id;
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      const response = await axios.get(`http://3.37.160.197/post/${params}/`);
+      setPostData(response.data);
+    };
+    fetchPostData();
+  }, []);
+
+  // function onSubmit() {
+  //   axios
+  //     .post("http://3.37.160.197/post/", {
+  //       title: commissionTitle,
+  //       content: commissionText,
+  //       tag: [],
+  //       head_image: null,
+  //       file_upload: null,
+  //     })
+  //     .then(console.log("성공"));
+  // }
 
   return (
     <Container
@@ -73,27 +97,33 @@ function Commission_A() {
             >
               {/* 클라이언트 정보 */}
               <Avatar></Avatar>
-              <Typography variant="h6" color="black" align="flex-end">
-                userID
+              <Typography variant="h7" color="black" align="flex-end">
+                {postData.author}
               </Typography>
             </Stack>
+            <Typography variant="h6" color="black">
+              {postData.title}
+            </Typography>
             <Box height="300px">
               {/* 원글 본문 */}
-              <p>커미션 설명</p>
+              <p>{postData.content}</p>
             </Box>
-
-            <MyEditor onChangeFunc={onChangeAnsText} />
+            <Line />
 
             <MyCanvas />
-
-            <Button
-              variant="outlined"
-              sx={{
-                width: "100px",
-              }}
-            >
-              작성완료
-            </Button>
+            <Link to="/page" style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "100px",
+                }}
+                onClick={() => {
+                  localStorage.setItem("ansText", ansText); // 추후에 답변 ID로
+                }}
+              >
+                작성완료
+              </Button>
+            </Link>
           </Stack>
         </Box>
       </Box>

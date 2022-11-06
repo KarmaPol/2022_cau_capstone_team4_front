@@ -11,6 +11,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import axios from "axios";
 import Appbar from "../components/Appbar";
 import icon from "../img/icon.png";
 import Line from "../components/Line";
@@ -28,6 +29,13 @@ export default function Sign_in() {
     setAccount({
       ...account,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const logIn = () => {
+    axios.post("http://3.37.160.197/user/api-auth/login/", {
+      username: "admin",
+      password: "paintin2022",
     });
   };
 
@@ -81,7 +89,12 @@ export default function Sign_in() {
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
-              <Button type="submit" fullWidth variant="contained">
+              <Button
+                onClick={logIn}
+                type="submit"
+                fullWidth
+                variant="contained"
+              >
                 로그인
               </Button>
               <Link to="/signup" style={{ textDecoration: "none" }}>

@@ -10,6 +10,7 @@ import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 export default function DrawTool(props) {
   const [currentColor, setCurrentColor] = useState();
+  const [eraserMode, setEraserMode] = useState(false);
 
   function onPNGSave() {
     const imgValue =
@@ -28,11 +29,19 @@ export default function DrawTool(props) {
       true
     );
   }
+
+  props.isSave && onPNGSave();
+
   return (
     <Stack direction="row" spacing={2}>
       <CompactPicker
-        color={props.currentColor}
-        onChangeComplete={(color) => props.setBrushColor(color.hex)}
+        color={eraserMode ? currentColor : props.brushColor}
+        onChangeComplete={(color) => {
+          if (!eraserMode) {
+            props.setBrushColor(color.hex);
+            setCurrentColor(color);
+          }
+        }}
       />
       <Button
         variant="outlined"
@@ -91,7 +100,10 @@ export default function DrawTool(props) {
             variant="contained"
             size="small"
             onClick={() => {
-              props.setBrushColor(currentColor);
+              if (eraserMode) {
+                setEraserMode((ex) => !ex);
+                props.setBrushColor(currentColor);
+              }
             }}
           >
             <ModeIcon />
@@ -100,8 +112,11 @@ export default function DrawTool(props) {
             variant="contained"
             size="small"
             onClick={() => {
-              setCurrentColor(props.brushColor);
-              props.setBrushColor("#FFFFFF");
+              if (!eraserMode) {
+                setCurrentColor(props.brushColor);
+                props.setBrushColor("#FFFFFF");
+                setEraserMode((ex) => !ex);
+              }
             }}
           >
             <AutoFixHighIcon />

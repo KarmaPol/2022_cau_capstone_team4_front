@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Container,
   Typography,
@@ -9,9 +10,11 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
+import MyCanvas from "../components/MyCanvas";
 
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
@@ -22,7 +25,17 @@ function Commission_Q() {
     setCommissiontText(_data);
   }
 
-  useEffect(() => {}, []);
+  function onSubmit() {
+    axios
+      .post("http://3.37.160.197/post/", {
+        title: commissionTitle,
+        content: commissionText,
+        tag: [],
+        head_image: null,
+        file_upload: null,
+      })
+      .then(console.log("성공"));
+  }
 
   return (
     <Container
@@ -93,14 +106,18 @@ function Commission_Q() {
               ></TextField>
             </Box>
             <MyEditor onChangeFunc={onChangeCommissionText} />
-            <Button
-              variant="outlined"
-              sx={{
-                width: "100px",
-              }}
-            >
-              작성완료
-            </Button>
+            <MyCanvas></MyCanvas>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Button
+                onClick={onSubmit}
+                variant="outlined"
+                sx={{
+                  width: "100px",
+                }}
+              >
+                작성완료
+              </Button>
+            </Link>
           </Stack>
         </Box>
       </Box>

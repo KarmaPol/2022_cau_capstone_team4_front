@@ -15,6 +15,8 @@ import Appbar from "../components/Appbar";
 import "../App.css";
 import Line from "../components/Line";
 import Bulletin from "../components/Bulletin";
+import { Link } from "react-router-dom";
+
 import Footer from "../components/Footer";
 
 function Commission_page() {
@@ -33,9 +35,7 @@ function Commission_page() {
 
   useEffect(() => {
     const fetchPostsData = async () => {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
+      const response = await axios.get("http://3.37.160.197/post/");
       setPostsData(response.data);
       setLoad(true);
     };
@@ -81,20 +81,41 @@ function Commission_page() {
               alignItems: "center",
             }}
           >
-            <Typography
-              align="left"
-              variant="h5"
+            <Box
               sx={{
-                fontWeight: "bold",
-                alignSelf: "start",
+                display: "flex",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              그림 의뢰
-            </Typography>
+              <Typography
+                align="left"
+                variant="h5"
+                sx={{
+                  fontWeight: "bold",
+                  alignSelf: "start",
+                }}
+              >
+                그림 의뢰
+              </Typography>
+              <Box
+                alignSelf="flex-start"
+                sx={{
+                  alignItems: "",
+                }}
+              >
+                <Link to="/question" style={{ textDecoration: "none" }}>
+                  <Button variant="outlined" disableElevation>
+                    게시글 작성
+                  </Button>
+                </Link>
+              </Box>
+            </Box>
             <Grid container spacing={2}>
               <Grid container item spacing={2}>
                 {postsData.slice(pageOffset, pageOffset + 3).map((post) => (
-                  <Grid item>
+                  <Grid key={post.id} item>
                     <Bulletin post={post}></Bulletin>
                   </Grid>
                 ))}

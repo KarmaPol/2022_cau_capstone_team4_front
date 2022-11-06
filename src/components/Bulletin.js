@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import Line from "./Line";
 
 export default function Bulletin(props) {
+  const param = props.post.id;
+
   return (
     <Box
       sx={{
@@ -33,12 +35,16 @@ export default function Bulletin(props) {
         <Box
           sx={{
             width: "240px",
-            height: "300px",
+            height: "240px",
             backgroundColor: "skyblue",
             borderRadius: "10px",
           }}
         ></Box>
-        <Link to="/page" color="black" style={{ textDecoration: "none" }}>
+        <Link
+          to={`/page/${param}`}
+          color="black"
+          style={{ textDecoration: "none" }}
+        >
           <Box>
             <Typography
               variant="subtitle1"
@@ -50,8 +56,7 @@ export default function Bulletin(props) {
             </Typography>
           </Box>
         </Link>
-
-        <Link to="/page" color="black" style={{ textDecoration: "none" }}>
+        <Link to={""} color="black" style={{ textDecoration: "none" }}>
           <Box>
             <Typography variant="body2" color="gray" component="div" sx={{}}>
               {props.post.userId}

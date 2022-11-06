@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import {
   Container,
   Typography,
@@ -10,6 +11,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import parse from "html-react-parser";
 import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
@@ -17,7 +19,28 @@ import Line from "../components/Line";
 import Comment from "../components/Comment";
 
 function Commission_page() {
-  useEffect(() => {}, []);
+  const [load, setLoad] = useState(false);
+  const [postData, setPostData] = useState([]);
+  const [ansData, setAnsData] = useState();
+
+  const params = useParams().id;
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      const response = await axios.get(`http://3.37.160.197/post/${params}/`);
+      setPostData(response.data);
+      setLoad(true);
+    };
+    const fetchAnsData = async () => {
+      const response = await axios.get("http://3.37.160.197/answer/1/");
+      setPostData(response.data);
+      setLoad(true);
+      console.log(response);
+    };
+    fetchPostData();
+  }, []);
+
+  console.log(postData);
 
   return (
     <Container
@@ -73,18 +96,18 @@ function Commission_page() {
               {/* 클라이언트 정보 */}
               <Avatar></Avatar>
               <Typography variant="h7" color="black" align="flex-end">
-                userID
+                {postData.author}
               </Typography>
             </Stack>
             <Typography variant="h6" color="black">
-              커미션 제목
+              {postData.title}
             </Typography>
             <Box height="300px">
               {/* 커미션 본문 */}
-              <p>커미션 설명</p>
+              <p>{postData.content}</p>
             </Box>
-            <h5>#태그 #예시 #테스트</h5>
-            <Comment></Comment>
+
+            <Comment />
             {/* 커미션 글 끝 */}
             <Line />
             {/* 답변 글 시작 */}
@@ -101,17 +124,15 @@ function Commission_page() {
                 userID
               </Typography>
             </Stack>
-            <Typography variant="h6" color="black">
-              답변 제목
-            </Typography>
+
             <Box height="300px">
               {/* 답변 본문 */}
-              <p>커미션 답변</p>
+              {/* <p>{parse(ansData)}</p> */}
             </Box>
             <Comment likeAvailabilty={true}></Comment>
             {/* 답변 글 끝 */}
             <Line />
-            <Link to="/answer" style={{ textDecoration: "none" }}>
+            <Link to={`/answer/${params}`} style={{ textDecoration: "none" }}>
               <Button
                 variant="outlined"
                 sx={{
