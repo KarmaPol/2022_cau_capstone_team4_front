@@ -44,16 +44,18 @@ function Commission_page() {
 
   return (
     <Container
+      fixed
       sx={{
         justifyContent: "center",
         alignItems: "center",
+        alignSelf: "center",
         width: "1000px",
       }}
     >
       <Appbar></Appbar>
       <Box
         sx={{
-          width: 1000,
+          width: "1000px",
           height: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
@@ -122,14 +124,14 @@ function Commission_page() {
               </Grid>
               <Grid container item spacing={2}>
                 {postsData.slice(pageOffset + 3, pageOffset + 6).map((post) => (
-                  <Grid item>
+                  <Grid key={post.id} item>
                     <Bulletin post={post}></Bulletin>
                   </Grid>
                 ))}
               </Grid>
               <Grid container item spacing={2}>
                 {postsData.slice(pageOffset + 6, pageOffset + 9).map((post) => (
-                  <Grid item>
+                  <Grid key={post.id} item>
                     <Bulletin post={post}></Bulletin>
                   </Grid>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -17,13 +17,18 @@ import "../App.css";
 import MyEditor from "../components/Editor";
 import Line from "../components/Line";
 import Comment from "../components/Comment";
+import Context from "../components/ContextProvider";
 
 function Commission_page() {
+  const { loggedUser, actions } = useContext(Context);
+
   const [load, setLoad] = useState(false);
   const [postData, setPostData] = useState([]);
   const [ansData, setAnsData] = useState();
 
   const params = useParams().id;
+
+  // console.log(state.loggedUser);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -41,6 +46,8 @@ function Commission_page() {
   }, []);
 
   console.log(postData);
+
+  console.log(loggedUser);
 
   return (
     <Container
@@ -104,27 +111,64 @@ function Commission_page() {
             </Typography>
             <Box height="300px">
               {/* 커미션 본문 */}
-              <p>{postData.content}</p>
+              <div dangerouslySetInnerHTML={{ __html: postData.content }}></div>
             </Box>
 
             <Comment />
             {/* 커미션 글 끝 */}
             <Line />
             {/* 답변 글 시작 */}
-            <Stack
-              spacing={2}
-              direction="row"
+            <Box
               sx={{
-                alignItems: "center",
+                display: "flex",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {/* 크리에이터 정보 */}
-              <Avatar></Avatar>
-              <Typography variant="body1" color="black" align="flex-end">
-                userID
-              </Typography>
-            </Stack>
-
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                }}
+              >
+                {/* 크리에이터 정보 */}
+                <Avatar></Avatar>
+                <Typography variant="body1" color="black" align="flex-end">
+                  userID
+                </Typography>
+              </Stack>
+              {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
+              <Stack spacing={1} direction="row">
+                <Link
+                  to={`/answer/${params}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      width: "100px",
+                    }}
+                  >
+                    채택
+                  </Button>
+                </Link>
+                <Link
+                  to={`/answer/${params}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      width: "100px",
+                    }}
+                  >
+                    보완
+                  </Button>
+                </Link>
+              </Stack>
+            </Box>
             <Box height="300px">
               {/* 답변 본문 */}
               {/* <p>{parse(ansData)}</p> */}

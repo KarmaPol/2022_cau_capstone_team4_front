@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
+import Context from "../components/ContextProvider";
 import Appbar from "../components/Appbar";
 import icon from "../img/icon.png";
 import Line from "../components/Line";
@@ -19,11 +20,15 @@ import "../App.css";
 import "./Sign_in.css";
 
 export default function Sign_in() {
+  const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
+
   const [account, setAccount] = useState({
     userID: "",
     userPW: "",
     nickName: "",
   });
+
+  console.log(account);
 
   const onChangeAccount = (e) => {
     setAccount({
@@ -32,12 +37,42 @@ export default function Sign_in() {
     });
   };
 
-  const logIn = () => {
-    axios.post("http://3.37.160.197/user/api-auth/login/", {
-      username: "admin",
-      password: "paintin2022",
-    });
+  const signUp = () => {
+    axios
+      .post("http://3.37.160.197/user/signup/", {
+        name: "t24",
+        username: "testname0",
+        email: "12344215@12.com",
+        password: "12345241",
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
+
+  const logIn = () => {
+    axios
+      .post("http://3.37.160.197/user/login/", {
+        username: account.userID,
+        password: account.userPW,
+      })
+      .then((res) => {
+        actions.setLoggedIn(true);
+        actions.setLoggedUser(() => res.data.Token);
+
+        localStorage.setItem("Token", res.data.Token);
+        localStorage.setItem("userID", account.userID);
+
+        actions.setLoggedUserData(account.userID);
+        actions.setLoggedIn(true);
+
+        // 일단 토큰만 저장
+      });
+  };
+  // console.log(loggedUser);
+
+  console.log(loggedUserData);
+  console.log(loggedIn);
 
   return (
     <Container
@@ -89,14 +124,16 @@ export default function Sign_in() {
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
-              <Button
-                onClick={logIn}
-                type="submit"
-                fullWidth
-                variant="contained"
-              >
-                로그인
-              </Button>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Button
+                  onClick={logIn}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                >
+                  로그인
+                </Button>
+              </Link>
               <Link to="/signup" style={{ textDecoration: "none" }}>
                 <Button type="submit" fullWidth variant="outlined">
                   회원가입
@@ -105,14 +142,6 @@ export default function Sign_in() {
             </Stack>
             <Stack spacing={1} width="100%">
               <Line />
-              <Grid container>
-                <Grid item xs>
-                  <Link>아이디 찾기</Link>
-                </Grid>
-                <Grid item>
-                  <Link>비밀번호 찾기</Link>
-                </Grid>
-              </Grid>
             </Stack>
           </Stack>
         </Box>

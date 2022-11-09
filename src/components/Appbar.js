@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   AppBar,
   Typography,
@@ -8,6 +8,7 @@ import {
   Stack,
   Button,
 } from "@mui/material";
+import Context from "./ContextProvider";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import "./Appbar.css";
@@ -15,6 +16,8 @@ import icon from "../img/paint in_.png";
 import { Link } from "react-router-dom";
 
 export default function Appbar() {
+  const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
+
   return (
     <AppBar
       elevation={0}
@@ -28,7 +31,7 @@ export default function Appbar() {
       <Toolbar>
         <Box
           sx={{
-            width: "1000px",
+            width: "1050px",
             margin: "auto",
           }}
         >
@@ -89,18 +92,24 @@ export default function Appbar() {
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                {/* <Avatar
-                  sx={{
-                    width: "36px",
-                    height: "36px",
-                  }}
-                ></Avatar>
-                <Typography variant="subtitle1" color="black" align="right">
-                  userID
-                </Typography> */}
-                <Link to="/signin" style={{ textDecoration: "none" }}>
-                  <Button variant="outlined">로그인</Button>
-                </Link>
+                {loggedIn ? (
+                  <>
+                    <Avatar
+                      sx={{
+                        width: "36px",
+                        height: "36px",
+                      }}
+                    ></Avatar>
+                    <Typography variant="subtitle1" color="black" align="right">
+                      {loggedUserData}
+                    </Typography>
+                  </>
+                ) : (
+                  <Link to="/signin" style={{ textDecoration: "none" }}>
+                    <Button variant="outlined">로그인</Button>
+                  </Link>
+                )}
+                {/*  */}
               </Stack>
             </Grid>
           </Grid>

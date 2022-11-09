@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -15,25 +15,38 @@ import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
 import MyCanvas from "../components/MyCanvas";
+import Context from "../components/ContextProvider";
 
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
   const [commissionTags, setTags] = useState("");
   const [commissionText, setCommissiontText] = useState("");
 
+  const { loggedUser, actions } = useContext(Context);
+
+  console.log(loggedUser);
+
   function onChangeCommissionText(_data) {
     setCommissiontText(_data);
   }
 
   function onSubmit() {
+    const config = {
+      headers: { Authorization: "Token " + loggedUser },
+    };
+    console.log(config);
     axios
-      .post("http://3.37.160.197/post/", {
-        title: commissionTitle,
-        content: commissionText,
-        tag: [],
-        head_image: null,
-        file_upload: null,
-      })
+      .post(
+        "http://3.37.160.197/post/",
+        {
+          title: commissionTitle,
+          content: commissionText,
+          tag: [],
+          head_image: null,
+          file_upload: null,
+        },
+        config
+      )
       .then(console.log("성공"));
   }
 
@@ -45,7 +58,8 @@ function Commission_Q() {
       <Box
         sx={{
           width: 1000,
-          height: "2000px",
+          minHeight: "2400px",
+
           backgroundColor: "white",
           margin: "0 auto",
           position: "absolute",
@@ -54,13 +68,10 @@ function Commission_Q() {
         <Box
           sx={{
             width: "900px",
-            height: "1900px",
+            minHeight: "2400px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
-            border: 0.5,
-            borderColor: "gray.400",
-            borderRadius: "10px",
           }}
         >
           <Stack
@@ -71,7 +82,14 @@ function Commission_Q() {
               width: "800px",
             }}
           >
-            <Typography align="left" variant="h5">
+            <Typography
+              align="left"
+              variant="h5"
+              sx={{
+                fontWeight: "bold",
+                alignSelf: "start",
+              }}
+            >
               그림 의뢰
             </Typography>
             <Box

@@ -106,7 +106,7 @@ function Commission_A() {
             </Typography>
             <Box height="300px">
               {/* 원글 본문 */}
-              <p>{postData.content}</p>
+              <div dangerouslySetInnerHTML={{ __html: postData.content }}></div>
             </Box>
             <Line />
 
