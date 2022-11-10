@@ -18,6 +18,13 @@ import { Link } from "react-router-dom";
 export default function Appbar() {
   const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
 
+  function logout() {
+    localStorage.clear();
+    actions.setLoggedIn(false);
+    actions.setLoggedUser("");
+    actions.setLoggedUserData("");
+  }
+
   return (
     <AppBar
       elevation={0}
@@ -100,13 +107,15 @@ export default function Appbar() {
                         height: "36px",
                       }}
                     ></Avatar>
-                    <Typography variant="subtitle1" color="black" align="right">
-                      {loggedUserData}
-                    </Typography>
+                    <Button onClick={logout} variant="outlined">
+                      로그아웃
+                    </Button>
                   </>
                 ) : (
                   <Link to="/signin" style={{ textDecoration: "none" }}>
-                    <Button variant="outlined">로그인</Button>
+                    <Button className="inputRounded" variant="contained">
+                      로그인
+                    </Button>
                   </Link>
                 )}
                 {/*  */}

@@ -71,7 +71,7 @@ export default function DrawTool(props) {
           width: "50px",
           height: "50px",
         }}
-        onClick={onSave}
+        onClick={onPNGSave}
       >
         <SaveIcon />
       </Button>

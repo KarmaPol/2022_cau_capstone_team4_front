@@ -93,20 +93,22 @@ function Commission_page() {
               그림 의뢰
             </Typography>
             {/* 커미션 글 시작 */}
-            <Stack
-              spacing={2}
-              direction="row"
-              sx={{
-                alignItems: "center",
-              }}
-            >
-              {/* 클라이언트 정보 */}
-              <Avatar></Avatar>
-              <Typography variant="h7" color="black" align="flex-end">
-                {postData.author}
-              </Typography>
-            </Stack>
-            <Typography variant="h6" color="black">
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Stack
+                spacing={1}
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                }}
+              >
+                {/* 클라이언트 정보 */}
+                <Avatar></Avatar>
+                <Typography variant="subtitle1" color="black" align="flex-end">
+                  {postData.author}
+                </Typography>
+              </Stack>
+            </Link>
+            <Typography variant="h5" color="black">
               {postData.title}
             </Typography>
             <Box height="300px">
@@ -126,19 +128,26 @@ function Commission_page() {
                 justifyContent: "space-between",
               }}
             >
-              <Stack
-                spacing={2}
-                direction="row"
-                sx={{
-                  alignItems: "center",
-                }}
-              >
-                {/* 크리에이터 정보 */}
-                <Avatar></Avatar>
-                <Typography variant="body1" color="black" align="flex-end">
-                  userID
-                </Typography>
-              </Stack>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  sx={{
+                    alignItems: "center",
+                  }}
+                >
+                  {/* 크리에이터 정보 */}
+                  <Avatar></Avatar>
+                  <Typography
+                    variant="subtitle1"
+                    color="black"
+                    align="flex-end"
+                  >
+                    userID
+                  </Typography>
+                </Stack>
+              </Link>
+
               {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
               <Stack spacing={1} direction="row">
                 <Link

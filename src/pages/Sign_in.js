@@ -50,6 +50,10 @@ export default function Sign_in() {
       });
   };
 
+  // username: "testname0",
+  // email: "12344215@12.com",
+  // password: "12345241",
+
   const logIn = () => {
     axios
       .post("http://3.37.160.197/user/login/", {
