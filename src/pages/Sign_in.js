@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -54,6 +54,12 @@ export default function Sign_in() {
   // email: "12344215@12.com",
   // password: "12345241",
 
+  const navigate = useNavigate();
+
+  function movePage() {
+    navigate(-1);
+  }
+
   const logIn = () => {
     axios
       .post("http://3.37.160.197/user/login/", {
@@ -61,16 +67,22 @@ export default function Sign_in() {
         password: account.userPW,
       })
       .then((res) => {
-        actions.setLoggedIn(true);
-        actions.setLoggedUser(() => res.data.Token);
+        if (res.data.Token !== undefined) {
+          console.log(res.data.Token);
+          actions.setLoggedIn(true);
+          actions.setLoggedUser(() => res.data.Token);
 
-        localStorage.setItem("Token", res.data.Token);
-        localStorage.setItem("userID", account.userID);
+          localStorage.setItem("Token", res.data.Token);
+          localStorage.setItem("userID", account.userID);
 
-        actions.setLoggedUserData(account.userID);
-        actions.setLoggedIn(true);
-
+          actions.setLoggedUserData(account.userID);
+          actions.setLoggedIn(true);
+          movePage();
+        }
         // 일단 토큰만 저장
+      })
+      .catch(() => {
+        alert("잘못된 아이디 또는 패스워드를 입력하였습니다");
       });
   };
   // console.log(loggedUser);
@@ -128,16 +140,14 @@ export default function Sign_in() {
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
-              <Link to="/" style={{ textDecoration: "none" }}>
-                <Button
-                  onClick={logIn}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                >
-                  로그인
-                </Button>
-              </Link>
+              <Button
+                onClick={logIn}
+                type="submit"
+                fullWidth
+                variant="contained"
+              >
+                로그인
+              </Button>
               <Link to="/signup" style={{ textDecoration: "none" }}>
                 <Button type="submit" fullWidth variant="outlined">
                   회원가입
