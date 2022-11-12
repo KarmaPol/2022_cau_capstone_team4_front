@@ -38,7 +38,7 @@ export default function Appbar() {
       <Toolbar>
         <Box
           sx={{
-            width: "1050px",
+            width: "1000px",
             margin: "auto",
           }}
         >
@@ -51,7 +51,7 @@ export default function Appbar() {
               </Link>
             </Grid>
             <Grid item xs>
-              <Link to="/" style={{ textDecoration: "none" }}>
+              <Link to="/list" style={{ textDecoration: "none" }}>
                 <Typography
                   variant="h6"
                   color="black"

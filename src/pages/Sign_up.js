@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
   Grid,
-  Link,
   TextField,
   Checkbox,
   Container,
@@ -11,6 +11,8 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import axios from "axios";
+import Context from "../components/ContextProvider";
 import Appbar from "../components/Appbar";
 import icon from "../img/icon.png";
 import Line from "../components/Line";
@@ -21,8 +23,11 @@ export default function Sign_up() {
   const [account, setAccount] = useState({
     userID: "",
     userPW: "",
+    email: "",
     nickName: "",
   });
+
+  const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
 
   const onChangeAccount = (e) => {
     setAccount({
@@ -31,18 +36,62 @@ export default function Sign_up() {
     });
   };
 
+  const signUp = () => {
+    axios
+      .post("http://3.37.160.197/user/signup", {
+        name: account.nickName,
+        username: account.userID,
+        email: account.email,
+        password: account.userPW,
+      })
+      .then((res) => {
+        console.log(res.data);
+        logIn();
+      });
+  };
+
+  const navigate = useNavigate();
+
+  function movePage() {
+    navigate("/");
+  }
+
+  const logIn = () => {
+    axios
+      .post("http://3.37.160.197/user/signin", {
+        username: account.userID,
+        password: account.userPW,
+      })
+      .then((res) => {
+        if (res.data.Token !== undefined) {
+          console.log(res.data.Token);
+          actions.setLoggedIn(true);
+          actions.setLoggedUser(() => res.data.Token);
+
+          localStorage.setItem("Token", res.data.Token);
+          localStorage.setItem("userID", account.userID);
+
+          actions.setLoggedUserData(account.userID);
+          actions.setLoggedIn(true);
+
+          movePage();
+        }
+      });
+  };
+
+  console.log(account);
+
   return (
-    <Container
-      sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
-    >
+    <Container>
       <Appbar></Appbar>
       <Box
         sx={{
-          width: 1000,
+          width: "1000px",
           height: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
-          position: "absolute",
+          border: 1,
+          borderColor: "white",
         }}
       >
         <Box
@@ -81,30 +130,34 @@ export default function Sign_up() {
               className="inputRounded2"
               required
               fullWidth
-              id="userPW"
-              label="비밀번호"
-              type="password"
-              name="userPW"
+              id="email"
+              label="이메일"
+              name="email"
               onChange={onChangeAccount}
             />
             <TextField
               className="inputRounded2"
               required
               fullWidth
-              id="userPWConfirm"
-              label="비밀번호 확인"
+              id="userPW"
+              label="비밀번호"
               type="password"
-              name="userPWConfirm"
+              name="userPW"
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
-              <Button type="submit" fullWidth variant="contained">
-                회원가입
-              </Button>
+              <Link to="/signin" style={{ textDecoration: "none" }}>
+                <Button
+                  onClick={signUp}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                >
+                  회원가입
+                </Button>
+              </Link>
             </Stack>
-            <Stack spacing={1} width="100%">
-              {/* <Line /> */}
-            </Stack>
+            <Line />
           </Stack>
         </Box>
       </Box>

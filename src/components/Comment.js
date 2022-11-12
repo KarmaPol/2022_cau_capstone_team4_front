@@ -78,7 +78,6 @@ export default function Comment(props) {
   const [likes, setlikes] = useState(3);
   const [comment, setComment] = useState("");
 
-  console.log(comment);
   const [commentClicked, setCommnetClicked] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
 
@@ -120,7 +119,41 @@ export default function Comment(props) {
 
       {commentClicked &&
         comments.map((comment) => (
-          <PrintComment comment={comment} key={comment.id}></PrintComment>
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <PrintComment comment={comment} key={comment.id}></PrintComment>
+              <Stack spacing={1} direction="row">
+                {/* {postData.} */}
+                <Button
+                  size="small"
+                  color="warning"
+                  variant="outlined"
+                  sx={{
+                    width: "50px",
+                  }}
+                >
+                  수정
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  variant="contained"
+                  sx={{
+                    width: "50px",
+                  }}
+                >
+                  삭제
+                </Button>
+              </Stack>
+            </Box>
+          </>
         ))}
       {commentClicked && (
         <Stack spacing={3} direction="row">

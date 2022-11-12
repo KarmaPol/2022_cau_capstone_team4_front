@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
   Container,
   Typography,
@@ -10,9 +10,11 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import Appbar from "../components/Appbar";
+import Context from "../components/ContextProvider";
 import "../App.css";
-import MyEditor from "../components/Editor";
 import Line from "../components/Line";
 import MyCanvas from "../components/MyCanvas";
 import { Link, useParams } from "react-router-dom";
@@ -22,53 +24,83 @@ function Commission_A() {
   const [ansImg, setAnsImg] = useState();
   const [postData, setPostData] = useState([]);
 
-  function onChangeAnsText(_data) {
-    setAnsText(() => _data);
-  }
+  const { loggedUser, actions } = useContext(Context);
+
+  const navigate = useNavigate();
 
   const params = useParams().id;
 
   useEffect(() => {
     const fetchPostData = async () => {
-      const response = await axios.get(`http://3.37.160.197/post/${params}/`);
+      const response = await axios.get(`http://3.37.160.197/post/${params}`);
       setPostData(response.data);
     };
     fetchPostData();
   }, []);
 
-  // function onSubmit() {
-  //   axios
-  //     .post("http://3.37.160.197/post/", {
-  //       title: commissionTitle,
-  //       content: commissionText,
-  //       tag: [],
-  //       head_image: null,
-  //       file_upload: null,
-  //     })
-  //     .then(console.log("성공"));
-  // }
+  const submitRef = useRef();
+
+  const onClickParent = (e) => {
+    submitRef.current.focus();
+  };
+
+  function onSubmit() {
+    onClickParent();
+    Swal.fire({
+      title: "답변을 제출하시겠어요?",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      denyButtonText: "취소",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        const ImgValue = localStorage.getItem("submitDrawing");
+
+        localStorage.setItem("default", ImgValue);
+
+        const config = {
+          headers: {
+            Authorization: "Token " + loggedUser,
+          },
+        };
+
+        axios
+          .post(
+            `http://3.37.160.197/post/${params}/answers`,
+            {
+              file_upload: ImgValue,
+            },
+            config
+          )
+          .then(console.log("성공"));
+
+        navigate(`/page/${params}`);
+      }
+    });
+  }
 
   return (
-    <Container
-      sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
-    >
+    <Container>
       <Appbar></Appbar>
       <Box
         sx={{
-          width: 1000,
-          minheight: "2500px",
+          width: "1000px",
+          height: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
-          position: "absolute",
+          border: 1,
+          borderColor: "white",
         }}
       >
         <Box
           sx={{
             width: "900px",
-            minHeight: "2400px",
+            height: "1900px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
+            border: 0.5,
+            borderColor: "grey.400",
+            borderRadius: "10px",
           }}
         >
           <Stack
@@ -110,20 +142,17 @@ function Commission_A() {
             </Box>
             <Line />
 
-            <MyCanvas />
-            <Link to="/page" style={{ textDecoration: "none" }}>
-              <Button
-                variant="outlined"
-                sx={{
-                  width: "100px",
-                }}
-                onClick={() => {
-                  localStorage.setItem("ansText", ansText); // 추후에 답변 ID로
-                }}
-              >
-                작성완료
-              </Button>
-            </Link>
+            <MyCanvas ref1={submitRef} />
+            <Button
+              onClick={onSubmit}
+              variant="outlined"
+              sx={{
+                width: "100px",
+              }}
+            >
+              작성완료
+            </Button>
+            {/* </Link> */}
           </Stack>
         </Box>
       </Box>

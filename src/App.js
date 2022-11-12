@@ -6,13 +6,15 @@ import Commission_page from "./pages/Commission_page";
 import Commission_list from "./pages/Commission_list";
 import Sign_in from "./pages/Sign_in";
 import Sign_up from "./pages/Sign_up";
+import MainPage from "./pages/MainPage";
 import { ContextProvider } from "./components/ContextProvider";
 
 function App() {
   return (
     <ContextProvider>
       <Routes>
-        <Route path="" element={<Commission_list />} />
+        <Route path="" element={<MainPage />} />
+        <Route path="/list" element={<Commission_list />} />
         <Route path="/page/:id" element={<Commission_page />} />
         <Route path="/question" element={<Commission_Q />} />
         <Route path="/answer/:id" element={<Commission_A />} />

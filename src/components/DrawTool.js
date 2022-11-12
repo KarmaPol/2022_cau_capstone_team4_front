@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState, useContext } from "react";
 import { CompactPicker } from "react-color";
 import { Box, Stack, Button, Slider } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
@@ -7,21 +7,35 @@ import SaveIcon from "@mui/icons-material/Save";
 import DownloadIcon from "@mui/icons-material/Download";
 import ModeIcon from "@mui/icons-material/Mode";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import { useImperativeHandle } from "react";
 
-export default function DrawTool(props) {
+export default function DrawTool(props, ref) {
   const [currentColor, setCurrentColor] = useState();
   const [eraserMode, setEraserMode] = useState(false);
 
-  function onPNGSave() {
-    const imgValue =
-      props.canvasRef.current.canvasContainer.childNodes[1].toDataURL();
-    console.log(imgValue);
-    localStorage.setItem("imgValue", imgValue); // 추후에 답변 ID로
+  function onSave() {
+    localStorage.setItem("savedDrawing", props.canvasRef.current.getSaveData());
+    console.log(localStorage.getItem("savedDrawing"));
   }
 
-  function onSave() {
-    localStorage.setItem("savedDrawing", props.canvasRef.current.getSaveData()); // 추후에 답변 ID로
+  function onSubmit() {
+    console.log("제발 돼라");
+    let baseCanvas = props.canvasRef.current.canvasContainer.childNodes[0]; // canvas with background image
+    let baseCanvasContex = baseCanvas.getContext("2d");
+    console.log(baseCanvasContex);
+
+    const copy = props.canvasRef.current.canvasContainer;
+    baseCanvasContex.drawImage(copy.childNodes[1], 0, 0);
+    const imgValue = baseCanvas.toDataURL();
+
+    localStorage.setItem("submitDrawing", imgValue);
   }
+
+  useImperativeHandle(props.ref1, () => ({
+    focus: () => {
+      onSubmit();
+    },
+  }));
 
   function onLoad(drawingName) {
     props.canvasRef.current.loadSaveData(
@@ -29,8 +43,6 @@ export default function DrawTool(props) {
       true
     );
   }
-
-  props.isSave && onPNGSave();
 
   return (
     <Stack direction="row" spacing={2}>
@@ -71,7 +83,7 @@ export default function DrawTool(props) {
           width: "50px",
           height: "50px",
         }}
-        onClick={onPNGSave}
+        onClick={onSave}
       >
         <SaveIcon />
       </Button>
@@ -88,11 +100,11 @@ export default function DrawTool(props) {
       </Button>
       <Stack sx={{ width: "100%" }} spacing={0}>
         <Slider
-          defaultValue={props.brushRad}
+          defaultValue={5}
           aria-label="Default"
           valueLabelDisplay="auto"
           min={1}
-          max={60}
+          max={100}
           onChange={(e) => props.setBrushRad(e.target.value)}
         />
         <Stack direction="row" spacing={1}>

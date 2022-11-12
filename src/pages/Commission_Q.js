@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import {
   Container,
@@ -10,68 +10,93 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Appbar from "../components/Appbar";
 import "../App.css";
 import MyEditor from "../components/Editor";
 import MyCanvas from "../components/MyCanvas";
 import Context from "../components/ContextProvider";
+import Swal from "sweetalert2";
 
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
   const [commissionTags, setTags] = useState("");
   const [commissionText, setCommissiontText] = useState("");
 
+  
   const { loggedUser, actions } = useContext(Context);
-
+  
+  const navigate = useNavigate();
+  
   console.log(loggedUser);
-
+  
   function onChangeCommissionText(_data) {
     setCommissiontText(_data);
   }
+  const submitRef = useRef();
+
+  const onClickParent = (e) => {
+    submitRef.current.focus();
+  };
 
   function onSubmit() {
-    const config = {
-      headers: { Authorization: "Token " + loggedUser },
-    };
-    console.log(config);
-    axios
-      .post(
-        "http://3.37.160.197/post/",
-        {
-          title: commissionTitle,
-          content: commissionText,
-          tag: [],
-          head_image: null,
-          file_upload: null,
-        },
-        config
-      )
-      .then(console.log("성공"));
+    onClickParent();
+    Swal.fire({
+      title: "그림의뢰글을 작성하시겠어요?",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      denyButtonText: "취소",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        const ImgValue = localStorage.getItem("submitDrawing");
+
+        localStorage.setItem("default", ImgValue);
+
+        const config = {
+          headers: {
+            Authorization: "Token " + loggedUser,
+          },
+        };
+
+        axios
+          .post(
+            `http://3.37.160.197/posts`,
+            {
+              title: commissionTitle,
+              content: commissionText,
+              tag: [],
+              file_upload: ImgValue,
+            },
+            config
+          )
+          .then(navigate("/list"));
+      }
+    });
   }
 
   return (
-    <Container
-      sx={{ justifyContent: "center", alignItems: "center", width: "1000px" }}
-    >
+    <Container>
       <Appbar></Appbar>
       <Box
         sx={{
-          width: 1000,
-          minHeight: "2400px",
-
+          width: "1000px",
+          height: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
-          position: "absolute",
+          border: 1,
+          borderColor: "white",
         }}
       >
         <Box
           sx={{
             width: "900px",
-            minHeight: "2400px",
+            height: "1900px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
+            border: 0.5,
+            borderColor: "grey.400",
+            borderRadius: "10px",
           }}
         >
           <Stack
@@ -124,18 +149,16 @@ function Commission_Q() {
               ></TextField>
             </Box>
             <MyEditor onChangeFunc={onChangeCommissionText} />
-            <MyCanvas></MyCanvas>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Button
-                onClick={onSubmit}
-                variant="outlined"
-                sx={{
-                  width: "100px",
-                }}
-              >
-                작성완료
-              </Button>
-            </Link>
+            <MyCanvas ref1={submitRef}></MyCanvas>
+            <Button
+              onClick={onSubmit}
+              variant="outlined"
+              sx={{
+                width: "100px",
+              }}
+            >
+              작성완료
+            </Button>
           </Stack>
         </Box>
       </Box>

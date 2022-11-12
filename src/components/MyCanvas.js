@@ -12,6 +12,7 @@ import {
 import CanvasDraw from "react-canvas-draw";
 import DrawTool from "../components/DrawTool";
 import Line from "../components/Line";
+import defaultImage from "../img/default.png";
 
 export default function MyCanvas(props) {
   const canvasRef = useRef(null);
@@ -27,6 +28,7 @@ export default function MyCanvas(props) {
         brushColor={brushColor}
         setBrushColor={setBrushColor}
         canvasRef={canvasRef}
+        ref1={props.ref1}
       />
       <Box>
         <Line />
@@ -39,6 +41,7 @@ export default function MyCanvas(props) {
           hideGrid={true}
           lazyRadius={0}
           loadTimeOffset={3}
+          imgSrc={defaultImage}
         />
         <Line />
       </Box>

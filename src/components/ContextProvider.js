@@ -19,7 +19,7 @@ const ContextProvider = ({ children }) => {
   // 토큰 저장
   const [loggedUser, setLoggedUser] = useState(localStorage.getItem("Token"));
   const [loggedUserData, setLoggedUserData] = useState(
-    localStorage.getItem("userID")
+    localStorage.getItem("userData")
   );
   // 유저 정보 저장
 

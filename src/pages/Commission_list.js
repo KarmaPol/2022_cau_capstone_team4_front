@@ -35,23 +35,15 @@ function Commission_page() {
 
   useEffect(() => {
     const fetchPostsData = async () => {
-      const response = await axios.get("http://3.37.160.197/post/");
-      setPostsData(response.data);
+      const response = await axios.get("http://3.37.160.197/posts");
+      setPostsData(response.data.reverse());
       setLoad(true);
     };
     fetchPostsData();
   }, []);
 
   return (
-    <Container
-      fixed
-      sx={{
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        width: "1000px",
-      }}
-    >
+    <Container>
       <Appbar></Appbar>
       <Box
         sx={{
@@ -59,7 +51,8 @@ function Commission_page() {
           height: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
-          position: "absolute",
+          border: 1,
+          borderColor: "white",
         }}
       >
         <Box
