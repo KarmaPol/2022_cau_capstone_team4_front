@@ -9,20 +9,22 @@ import ModeIcon from "@mui/icons-material/Mode";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { useImperativeHandle } from "react";
 
-export default function DrawTool(props, ref) {
+export default function DrawTool(props) {
   const [currentColor, setCurrentColor] = useState();
   const [eraserMode, setEraserMode] = useState(false);
 
   function onSave() {
     localStorage.setItem("savedDrawing", props.canvasRef.current.getSaveData());
-    console.log(localStorage.getItem("savedDrawing"));
+    // console.log(localStorage.getItem("savedDrawing"));
   }
 
   function onSubmit() {
-    console.log("제발 돼라");
+    localStorage.setItem("savedDrawing", props.canvasRef.current.getSaveData());
+    // console.log(localStorage.getItem("savedDrawing"));
+
     let baseCanvas = props.canvasRef.current.canvasContainer.childNodes[0]; // canvas with background image
     let baseCanvasContex = baseCanvas.getContext("2d");
-    console.log(baseCanvasContex);
+    // console.log(baseCanvasContex);
 
     const copy = props.canvasRef.current.canvasContainer;
     baseCanvasContex.drawImage(copy.childNodes[1], 0, 0);

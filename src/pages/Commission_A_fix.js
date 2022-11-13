@@ -19,7 +19,7 @@ import Line from "../components/Line";
 import MyCanvas from "../components/MyCanvas";
 import { Link, useParams } from "react-router-dom";
 
-function Commission_A() {
+function Commission_A_fix() {
   const [ansText, setAnsText] = useState("");
   const [ansImg, setAnsImg] = useState();
   const [postData, setPostData] = useState([]);
@@ -28,11 +28,13 @@ function Commission_A() {
 
   const navigate = useNavigate();
 
-  const params = useParams().id;
+  const qparams = useParams().qid; //q ID
+  console.log(qparams);
+  const aparams = useParams().aid; //ans ID
 
   useEffect(() => {
     const fetchPostData = async () => {
-      const response = await axios.get(`http://3.37.160.197/post/${params}`);
+      const response = await axios.get(`http://3.37.160.197/post/${qparams}`);
       setPostData(response.data);
     };
     fetchPostData();
@@ -55,6 +57,8 @@ function Commission_A() {
       if (res.isConfirmed) {
         const ImgValue = localStorage.getItem("submitDrawing");
 
+        localStorage.setItem("default", ImgValue);
+
         const config = {
           headers: {
             Authorization: "Token " + loggedUser,
@@ -63,7 +67,7 @@ function Commission_A() {
 
         axios
           .post(
-            `http://3.37.160.197/post/${params}/answers`,
+            `http://3.37.160.197/post/${[qparams]}/answers`,
             {
               file_upload: ImgValue,
               savedata: localStorage.getItem("savedDrawing"),
@@ -72,7 +76,7 @@ function Commission_A() {
           )
           .then(console.log("성공"));
 
-        navigate(`/page/${params}`);
+        navigate(`/page/${qparams}`);
       }
     });
   }
@@ -145,7 +149,12 @@ function Commission_A() {
             </Box>
             <Line />
 
-            <MyCanvas ref1={submitRef} load={false} qid={null} aid={null} />
+            <MyCanvas
+              ref1={submitRef}
+              load={true}
+              qid={qparams}
+              aid={aparams}
+            />
             <Button
               onClick={onSubmit}
               variant="outlined"
@@ -163,4 +172,4 @@ function Commission_A() {
   );
 }
 
-export default Commission_A;
+export default Commission_A_fix;

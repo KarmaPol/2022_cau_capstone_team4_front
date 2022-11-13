@@ -16,56 +16,113 @@ import "../App.css";
 import Line from "../components/Line";
 import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
-
 import Footer from "../components/Footer";
+import mainPic from "../img/mainpagePic.png";
+import "./MainPage.css";
 
 function MainPage() {
   const [postsData, setPostsData] = useState([]);
-  const [pageLimit, setPageLimit] = useState(9);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [load, setLoad] = useState(false);
 
-  const pageOffset = (currentPage - 1) * pageLimit;
-
-  const changePage = (v) => {
-    const nextPage = v;
-    console.log(nextPage);
-    setCurrentPage(nextPage);
-  };
-
-  useEffect(() => {
-    const fetchPostsData = async () => {
-      const response = await axios.get("http://3.37.160.197/post/");
-      setPostsData(response.data);
-      setLoad(true);
-    };
-    fetchPostsData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchPostsData = async () => {
+  //     const response = await axios.get("http://3.37.160.197/post/main");
+  //     setPostsData(response.data);
+  //     console.log(response);
+  //   };
+  //   fetchPostsData();
+  // }, []);
 
   return (
-    <Container>
-      <Appbar></Appbar>
-      <Box
-        sx={{
-          width: "1000px",
-          height: "2000px",
-          backgroundColor: "white",
-          margin: "0 auto",
-          border: 1,
-          borderColor: "white",
-        }}
-      >
-        <Stack
-          spacing={2}
+    <>
+      <Box minHeight="2000px">
+        <Appbar></Appbar>
+        <Box
+          className="container"
           sx={{
-            mt: "25px",
-            ml: "50px",
-            width: "800px",
+            height: "500px",
+            mt: "65px",
+            backgroundColor: "#e6faff",
+            border: 1,
+            borderColor: "#e6faff",
+            display: "flex",
+            justifyContent: "center",
             alignItems: "center",
           }}
-        ></Stack>
+        >
+          <Box
+            width="1000px"
+            sx={{
+              padding: "25px",
+              boxSizing: "border-box",
+            }}
+          >
+            <Stack
+              spacing={10}
+              direction="row"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h3"
+                color="black"
+                component="div"
+                sx={{
+                  fontWeight: "bold",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {`내 아이디어를\n멋진 그림으로`}
+              </Typography>
+              <img src={mainPic}></img>
+            </Stack>
+          </Box>
+        </Box>
+        <Box
+          className="container"
+          sx={{
+            height: "500px",
+            backgroundColor: "#FFF8EF",
+            border: 1,
+            borderColor: "#FFF8EF",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            width="1000px"
+            sx={{
+              padding: "25px",
+              boxSizing: "border-box",
+            }}
+          >
+            <Stack
+              spacing={10}
+              direction="row"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <img src={mainPic}></img>
+              <Typography
+                variant="h3"
+                color="black"
+                component="div"
+                sx={{
+                  fontWeight: "bold",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {`당신의 상상력을\n펼치세요`}
+              </Typography>
+            </Stack>
+          </Box>
+        </Box>
       </Box>
-    </Container>
+    </>
   );
 }
 

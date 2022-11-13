@@ -9,16 +9,37 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import axios from "axios";
+
 import CanvasDraw from "react-canvas-draw";
 import DrawTool from "../components/DrawTool";
 import Line from "../components/Line";
 import defaultImage from "../img/default.png";
 
 export default function MyCanvas(props) {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef();
   const [brushRad, setBrushRad] = useState(5);
   const [brushColor, setBrushColor] = useState("#000000");
-  const [drawing, setDrawing] = useState();
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("test", props.load);
+      if (props.load) {
+        console.log(props.aid);
+        if (canvasRef !== undefined) {
+          console.log(canvasRef.current);
+          const fetchSaveData = async () => {
+            const response = await axios.get(
+              `http://3.37.160.197/answer/${props.aid}`
+            );
+            console.log(response.data.savedata);
+            canvasRef.current.loadSaveData(response.data.savedata, true);
+          };
+          fetchSaveData();
+        }
+      }
+    }, 500);
+  }, []);
 
   return (
     <Stack spacing={1}>
@@ -29,6 +50,9 @@ export default function MyCanvas(props) {
         setBrushColor={setBrushColor}
         canvasRef={canvasRef}
         ref1={props.ref1}
+        qid={props.qid}
+        aid={props.aid}
+        load={props.load}
       />
       <Box>
         <Line />
@@ -42,6 +66,7 @@ export default function MyCanvas(props) {
           lazyRadius={0}
           loadTimeOffset={3}
           imgSrc={defaultImage}
+          enablePanAndZoom={true}
         />
         <Line />
       </Box>

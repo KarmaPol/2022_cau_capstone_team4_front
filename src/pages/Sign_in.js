@@ -84,10 +84,6 @@ export default function Sign_in() {
         });
       });
   };
-  // console.log(loggedUser);
-
-  console.log(loggedUserData);
-  console.log(loggedIn);
 
   return (
     <Container>

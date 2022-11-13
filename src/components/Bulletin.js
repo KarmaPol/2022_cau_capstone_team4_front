@@ -13,6 +13,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Line from "./Line";
 import styled from "styled-components";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 const Thumbnail = styled.img`
   width: "240px";
@@ -35,19 +38,26 @@ export default function Bulletin(props) {
         borderRadius: "10px",
       }}
     >
-      <Link
-        to={`/page/${param}`}
-        color="black"
-        style={{ textDecoration: "none" }}
+      <Stack
+        spacing={1}
+        sx={{
+          padding: "5px",
+        }}
       >
-        <Stack
-          spacing={1}
-          sx={{
-            padding: "5px",
+        <Thumbnail
+          onClick={() => {
+            navigate(`/page/${props.post.id}`);
           }}
+          src={props.post.file_upload}
+        />
+        <Line />
+        <Box
+          onClick={() => {
+            navigate(`/page/${props.post.id}`);
+          }}
+          src={props.post.file_upload}
         >
-          <Thumbnail src={props.post.file_upload} />
-          <Box>
+          <Stack direction="row" spacing={1}>
             <Typography
               variant="subtitle1"
               color="black"
@@ -56,16 +66,38 @@ export default function Bulletin(props) {
             >
               {props.post.title}
             </Typography>
-          </Box>
-        </Stack>
-      </Link>
-      <Link to={""} color="black" style={{ textDecoration: "none" }}>
-        <Box>
+            {props.post.selected === 0 ? (
+              <UnpublishedIcon />
+            ) : props.post.selected === 1 ? (
+              <CheckCircleOutlineIcon
+                sx={{
+                  color: "black",
+                }}
+              />
+            ) : (
+              <VerifiedIcon />
+            )}
+          </Stack>
+        </Box>
+        <Box
+          onClick={() => {
+            navigate(`/
+            `);
+          }}
+        >
           <Typography variant="body2" color="gray" component="div" sx={{}}>
-            {props.post.userId}
+            {props.post.author}
           </Typography>
         </Box>
-      </Link>
+        <Typography
+          variant="body2"
+          color="gray"
+          component="div"
+          sx={{ fontWeight: "bold" }}
+        >
+          {props.post.point}
+        </Typography>
+      </Stack>
     </Box>
   );
 }

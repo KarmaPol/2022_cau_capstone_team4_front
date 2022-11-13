@@ -36,7 +36,7 @@ function Commission_page() {
   useEffect(() => {
     const fetchPostsData = async () => {
       const response = await axios.get("http://3.37.160.197/posts");
-      setPostsData(response.data.reverse());
+      setPostsData(response.data);
       setLoad(true);
     };
     fetchPostsData();
