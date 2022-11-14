@@ -38,6 +38,9 @@ export default function Bulletin(props) {
         }}
       >
         <img
+          onClick={() => {
+            navigate(`/page/${props.post.id}`);
+          }}
           className="img"
           src={
             props.post.thumbnail === null
