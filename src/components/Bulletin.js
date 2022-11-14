@@ -38,7 +38,7 @@ export default function Bulletin(props) {
         }}
       >
         <img
-          // className="img"
+          className="img"
           src={
             props.post.thumbnail === null
               ? props.post.file_upload
