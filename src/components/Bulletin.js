@@ -17,12 +17,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import "./Bulletin.css";
 
-const Thumbnail = styled.img`
-  width: "240px";
-  height: "240px";
-  object-fit: "contain";
-`;
-
 export default function Bulletin(props) {
   const navigate = useNavigate();
 
@@ -43,16 +37,14 @@ export default function Bulletin(props) {
           padding: "5px",
         }}
       >
-        <Thumbnail
-          onClick={() => {
-            navigate(`/page/${props.post.id}`);
-          }}
+        <img
+          // className="img"
           src={
             props.post.thumbnail === null
               ? props.post.file_upload
               : props.post.thumbnail
           }
-        />
+        ></img>
 
         <Line />
         <Box
