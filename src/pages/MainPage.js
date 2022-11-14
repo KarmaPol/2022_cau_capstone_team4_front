@@ -40,6 +40,7 @@ function MainPage() {
           className="container"
           sx={{
             height: "500px",
+            minWidth: "1000px",
             mt: "65px",
             backgroundColor: "#e6faff",
             border: 1,
@@ -84,6 +85,8 @@ function MainPage() {
           sx={{
             height: "500px",
             backgroundColor: "#FFF8EF",
+            minWidth: "1000px",
+
             border: 1,
             borderColor: "#FFF8EF",
             display: "flex",
@@ -122,6 +125,7 @@ function MainPage() {
           </Box>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 }

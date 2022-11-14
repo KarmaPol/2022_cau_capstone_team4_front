@@ -16,7 +16,6 @@ import "../App.css";
 import Line from "../components/Line";
 import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
-
 import Footer from "../components/Footer";
 
 function Commission_page() {
@@ -43,12 +42,12 @@ function Commission_page() {
   }, []);
 
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
           width: "1000px",
-          height: "2000px",
+          minheight: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
           border: 1,
@@ -58,7 +57,7 @@ function Commission_page() {
         <Box
           sx={{
             width: "900px",
-            height: "1900px",
+            height: "1500px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
@@ -143,8 +142,10 @@ function Commission_page() {
             />
           </Stack>
         </Box>
+        <Box minHeight="300px" />
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
 

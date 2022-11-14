@@ -18,6 +18,7 @@ import icon from "../img/icon.png";
 import Line from "../components/Line";
 import "../App.css";
 import "./Sign_in.css";
+import Footer from "../components/Footer";
 
 export default function Sign_up() {
   const [account, setAccount] = useState({
@@ -82,7 +83,7 @@ export default function Sign_up() {
   console.log(account);
 
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
@@ -161,6 +162,7 @@ export default function Sign_up() {
           </Stack>
         </Box>
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }

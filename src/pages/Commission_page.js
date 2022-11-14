@@ -11,10 +11,8 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import parse from "html-react-parser";
 import Appbar from "../components/Appbar";
 import "../App.css";
-import MyEditor from "../components/Editor";
 import Line from "../components/Line";
 import Comment from "../components/Comment";
 import Context from "../components/ContextProvider";
@@ -23,6 +21,7 @@ import UnpublishedIcon from "@mui/icons-material/Unpublished";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { Children } from "react";
+import Footer from "../components/Footer";
 
 function Commission_page() {
   const { loggedUser, actions } = useContext(Context);
@@ -104,8 +103,10 @@ function Commission_page() {
     });
   };
 
+  // 게시글 댓글 작성
+
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
@@ -246,7 +247,7 @@ function Commission_page() {
             <Box>
               <img src={postData.file_upload} />
             </Box>
-            <Comment />
+            <Comment type={"post"} id={params} />
             <Line />
 
             {/* 커미션 글 끝 */}
@@ -339,7 +340,11 @@ function Commission_page() {
                         {/* 답변 본문 */}
                         <img src={ans.file_upload} />
                       </Box>
-                      <Comment likeAvailabilty={true}></Comment>
+                      <Comment
+                        likeAvailabilty={true}
+                        type={"answer"}
+                        id={ans.id}
+                      ></Comment>
                       {/* 답변 글 끝 */}
                       <Box
                         sx={{
@@ -365,10 +370,13 @@ function Commission_page() {
                 </Button>
               </Link>
             )}
+            <Box minHeight="100px" />
           </Stack>
         </Box>
+        <Box minHeight="300px" />
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
 

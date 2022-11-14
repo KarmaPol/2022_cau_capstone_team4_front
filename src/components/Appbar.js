@@ -31,6 +31,7 @@ export default function Appbar() {
       position="fixed"
       color="inherit"
       sx={{
+        minWidth: "1000px",
         borderBottom: 0.5,
         borderColor: "grey.300",
       }}

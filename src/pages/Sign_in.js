@@ -19,6 +19,7 @@ import icon from "../img/icon.png";
 import Line from "../components/Line";
 import "../App.css";
 import "./Sign_in.css";
+import Footer from "../components/Footer";
 
 export default function Sign_in() {
   const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
@@ -86,7 +87,7 @@ export default function Sign_in() {
   };
 
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
@@ -154,6 +155,7 @@ export default function Sign_in() {
           </Stack>
         </Box>
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }

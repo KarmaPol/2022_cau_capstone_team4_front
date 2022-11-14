@@ -18,6 +18,7 @@ import "../App.css";
 import Line from "../components/Line";
 import MyCanvas from "../components/MyCanvas";
 import { Link, useParams } from "react-router-dom";
+import Footer from "../components/Footer";
 
 function Commission_A() {
   const [ansText, setAnsText] = useState("");
@@ -78,7 +79,7 @@ function Commission_A() {
   }
 
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
@@ -155,11 +156,13 @@ function Commission_A() {
             >
               작성완료
             </Button>
-            {/* </Link> */}
+            <Box height="100px" />
           </Stack>
         </Box>
+        <Box height="300px" />
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
 

@@ -17,19 +17,19 @@ import MyEditor from "../components/Editor";
 import MyCanvas from "../components/MyCanvas";
 import Context from "../components/ContextProvider";
 import Swal from "sweetalert2";
+import Footer from "../components/Footer";
 
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
   const [commissionTags, setTags] = useState("");
   const [commissionText, setCommissiontText] = useState("");
 
-  
   const { loggedUser, actions } = useContext(Context);
-  
+
   const navigate = useNavigate();
-  
+
   console.log(loggedUser);
-  
+
   function onChangeCommissionText(_data) {
     setCommissiontText(_data);
   }
@@ -75,12 +75,12 @@ function Commission_Q() {
   }
 
   return (
-    <Container>
+    <>
       <Appbar></Appbar>
       <Box
         sx={{
           width: "1000px",
-          height: "2000px",
+          minheight: "2000px",
           backgroundColor: "white",
           margin: "0 auto",
           border: 1,
@@ -90,7 +90,7 @@ function Commission_Q() {
         <Box
           sx={{
             width: "900px",
-            height: "1900px",
+            minheight: "1900px",
             backgroundColor: "white",
             margin: "0 auto",
             mt: "100px",
@@ -159,10 +159,13 @@ function Commission_Q() {
             >
               작성완료
             </Button>
+            <Box minHeight="100px" />
           </Stack>
         </Box>
+        <Box minHeight="300px" />
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
 

@@ -13,7 +13,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Line from "./Line";
 import styled from "styled-components";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VerifiedIcon from "@mui/icons-material/Verified";
 
@@ -24,8 +23,6 @@ const Thumbnail = styled.img`
 `;
 
 export default function Bulletin(props) {
-  const param = props.post.id;
-
   const navigate = useNavigate();
 
   return (
@@ -33,9 +30,10 @@ export default function Bulletin(props) {
       sx={{
         width: "250px",
         minHeight: "400px",
-        border: 1,
-        borderColor: "grey.300",
+        border: props.post.selected === 2 ? 2 : 1,
+        borderColor: props.post.selected === 2 ? "black" : "grey.300",
         borderRadius: "10px",
+        boxSizing: "border-box",
       }}
     >
       <Stack
@@ -48,14 +46,17 @@ export default function Bulletin(props) {
           onClick={() => {
             navigate(`/page/${props.post.id}`);
           }}
-          src={props.post.file_upload}
+          src={
+            props.post.thumbnail === null
+              ? props.post.file_upload
+              : props.post.thumbnail
+          }
         />
         <Line />
         <Box
           onClick={() => {
             navigate(`/page/${props.post.id}`);
           }}
-          src={props.post.file_upload}
         >
           <Stack direction="row" spacing={1}>
             <Typography
@@ -66,9 +67,7 @@ export default function Bulletin(props) {
             >
               {props.post.title}
             </Typography>
-            {props.post.selected === 0 ? (
-              <UnpublishedIcon />
-            ) : props.post.selected === 1 ? (
+            {props.post.selected === 0 ? null : props.post.selected === 1 ? (
               <CheckCircleOutlineIcon
                 sx={{
                   color: "black",
