@@ -15,11 +15,12 @@ import Line from "./Line";
 import styled from "styled-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VerifiedIcon from "@mui/icons-material/Verified";
+import "./Bulletin.css";
 
 const Thumbnail = styled.img`
   width: "240px";
   height: "240px";
-  border-radius: "10px";
+  object-fit: "contain";
 `;
 
 export default function Bulletin(props) {
@@ -59,6 +60,7 @@ export default function Bulletin(props) {
           }}
         >
           <img
+            class="img"
             src={
               props.post.thumbnail === null
                 ? props.post.file_upload
