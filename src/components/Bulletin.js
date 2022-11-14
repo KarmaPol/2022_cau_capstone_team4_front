@@ -42,7 +42,7 @@ export default function Bulletin(props) {
           padding: "5px",
         }}
       >
-        <Thumbnail
+        {/* <Thumbnail
           onClick={() => {
             navigate(`/page/${props.post.id}`);
           }}
@@ -51,7 +51,21 @@ export default function Bulletin(props) {
               ? props.post.file_upload
               : props.post.thumbnail
           }
-        />
+        /> */}
+        <Box
+          sx={{
+            width: "240px",
+            height: "240px",
+          }}
+        >
+          <img
+            src={
+              props.post.thumbnail === null
+                ? props.post.file_upload
+                : props.post.thumbnail
+            }
+          />
+        </Box>
         <Line />
         <Box
           onClick={() => {
