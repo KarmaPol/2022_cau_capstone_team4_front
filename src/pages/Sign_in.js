@@ -37,9 +37,7 @@ export default function Sign_in() {
     });
   };
 
-  // username: "testname0",
-  // email: "12344215@12.com",
-  // password: "12345241",
+  console.log(account);
 
   const navigate = useNavigate();
 
@@ -116,6 +114,7 @@ export default function Sign_in() {
               className="inputRounded2"
               required
               fullWidth
+              value={account.userID}
               id="userID"
               label="아이디"
               name="userID"
@@ -127,6 +126,7 @@ export default function Sign_in() {
               className="inputRounded2"
               required
               fullWidth
+              value={account.uwerPW}
               id="userPW"
               label="비밀번호"
               type="password"

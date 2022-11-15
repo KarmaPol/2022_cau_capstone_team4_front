@@ -13,7 +13,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import "./Appbar.css";
 import icon from "../img/paint in_.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Appbar() {
   const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
@@ -22,8 +22,11 @@ export default function Appbar() {
     localStorage.clear();
     actions.setLoggedIn(false);
     actions.setLoggedUser("");
-    actions.setLoggedUserData("");
+    actions.setLoggedUserData(null);
+    navigate(`/`);
   }
+
+  const navigate = useNavigate();
 
   return (
     <AppBar
@@ -102,9 +105,13 @@ export default function Appbar() {
               >
                 {loggedIn ? (
                   <>
-                    <Link
-                      to={`/profile/${loggedUserData.username}`}
-                      style={{ textDecoration: "none" }}
+                    <Box
+                      onClick={() => {
+                        if (loggedUserData.username !== undefined) {
+                          console.log(loggedUserData.username);
+                          navigate(`/profile/${loggedUserData.username}`);
+                        }
+                      }}
                     >
                       <Avatar
                         sx={{
@@ -112,7 +119,8 @@ export default function Appbar() {
                           height: "36px",
                         }}
                       ></Avatar>
-                    </Link>
+                    </Box>
+
                     <Button onClick={logout} variant="outlined">
                       로그아웃
                     </Button>

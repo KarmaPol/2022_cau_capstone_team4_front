@@ -24,8 +24,6 @@ function Profile() {
 
   console.log(loggedUserData);
 
-  console.log(localStorage.getItem("userData"));
-
   return (
     <>
       <Appbar></Appbar>
