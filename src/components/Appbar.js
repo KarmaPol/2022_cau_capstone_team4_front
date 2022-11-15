@@ -102,12 +102,17 @@ export default function Appbar() {
               >
                 {loggedIn ? (
                   <>
-                    <Avatar
-                      sx={{
-                        width: "36px",
-                        height: "36px",
-                      }}
-                    ></Avatar>
+                    <Link
+                      to={`/profile/${loggedUserData.username}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Avatar
+                        sx={{
+                          width: "36px",
+                          height: "36px",
+                        }}
+                      ></Avatar>
+                    </Link>
                     <Button onClick={logout} variant="outlined">
                       로그아웃
                     </Button>

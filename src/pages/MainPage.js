@@ -18,23 +18,24 @@ import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import mainPic from "../img/mainpagePic.png";
+import mainPic2 from "../img/mainpage2.png";
 import "./MainPage.css";
 
 function MainPage() {
   const [postsData, setPostsData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchPostsData = async () => {
-  //     const response = await axios.get("http://3.37.160.197/post/main");
-  //     setPostsData(response.data);
-  //     console.log(response);
-  //   };
-  //   fetchPostsData();
-  // }, []);
+  useEffect(() => {
+    const fetchPostsData = async () => {
+      const response = await axios.get("http://3.37.160.197/post/main");
+      setPostsData(response.data);
+      console.log(response);
+    };
+    fetchPostsData();
+  }, []);
 
   return (
     <>
-      <Box minHeight="2000px">
+      <Box minHeight="1500px">
         <Appbar></Appbar>
         <Box
           className="container"
@@ -76,6 +77,7 @@ function MainPage() {
               >
                 {`내 아이디어를\n멋진 그림으로`}
               </Typography>
+
               <img src={mainPic}></img>
             </Stack>
           </Box>
@@ -86,7 +88,6 @@ function MainPage() {
             height: "500px",
             backgroundColor: "#FFF8EF",
             minWidth: "1000px",
-
             border: 1,
             borderColor: "#FFF8EF",
             display: "flex",
@@ -109,7 +110,8 @@ function MainPage() {
                 alignItems: "center",
               }}
             >
-              <img src={mainPic}></img>
+              <img src={mainPic2}></img>
+
               <Typography
                 variant="h3"
                 color="black"
@@ -121,6 +123,56 @@ function MainPage() {
               >
                 {`당신의 상상력을\n펼치세요`}
               </Typography>
+            </Stack>
+          </Box>
+        </Box>
+        <Box
+          className="container2"
+          sx={{
+            minHeight: "700px",
+            backgroundColor: "#ffffff",
+            minWidth: "1000px",
+            borderColor: "#FFF8EF",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Box
+            width="1000px"
+            sx={{
+              padding: "25px",
+              boxSizing: "border-box",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Stack
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              spacing={3}
+            >
+              <Typography
+                align="left"
+                variant="h5"
+                sx={{
+                  fontWeight: "bold",
+                  alignSelf: "start",
+                }}
+              >
+                그림 의뢰
+              </Typography>
+              <Stack direction="row" spacing={5}>
+                {postsData.map((post) => (
+                  <Bulletin post={post}></Bulletin>
+                ))}
+              </Stack>
+              <Box width="400px">
+                <Button size="small" fullWidth variant="outlined">
+                  더보기
+                </Button>
+              </Box>
             </Stack>
           </Box>
         </Box>

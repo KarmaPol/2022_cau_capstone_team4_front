@@ -47,26 +47,22 @@ export default function Comment(props) {
   const [likes, setlikes] = useState(3);
   const [comment, setComment] = useState("");
   const [commentClicked, setCommnetClicked] = useState(false);
-  const [commentSubmited, setCommentSubmited] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
 
   useEffect(() => {
-    const fetchCommentData = async () => {
-      console.log(props.id);
-      const response = await axios.get(
-        `http://3.37.160.197/${props.type}/${props.id}/comments`
-      );
-
-      console.log(response.data);
-
-      setComments(response.data);
-    };
     fetchCommentData();
-  }, [commentSubmited]);
-
-  useEffect(() => {
-    getLike();
   }, []);
+
+  const fetchCommentData = async () => {
+    console.log(props.id);
+    const response = await axios.get(
+      `http://3.37.160.197/${props.type}/${props.id}/comments`
+    );
+
+    console.log(response.data);
+
+    setComments(response.data);
+  };
 
   const submitComment = () => {
     const config = {
@@ -78,7 +74,7 @@ export default function Comment(props) {
         { content: comment },
         config
       )
-      .then(setCommentSubmited((ex) => !ex));
+      .then(fetchCommentData);
     setComment("");
   };
 
@@ -88,7 +84,7 @@ export default function Comment(props) {
     };
     axios
       .delete(`http://3.37.160.197/comment/${commentId}`, config)
-      .then(setCommentSubmited((ex) => !ex));
+      .then(fetchCommentData);
   };
 
   const getLike = async () => {
@@ -111,7 +107,6 @@ export default function Comment(props) {
               color: "grey.700",
             }}
             onClick={() => {
-              getLike();
               setLikeClicked((ex) => !ex);
               setlikes((ex) => ex + 1);
             }}

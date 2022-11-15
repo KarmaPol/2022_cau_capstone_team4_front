@@ -62,7 +62,8 @@ export default function Sign_in() {
           axios
             .get(`http://3.37.160.197/user/${account.userID}`)
             .then((res) => {
-              localStorage.setItem("userData", res.data);
+              localStorage.setItem("userData", JSON.stringify(res.data));
+              console.log(localStorage.getItem("userData"));
               console.log(res.data);
               actions.setLoggedUserData(res.data);
             });
@@ -73,7 +74,6 @@ export default function Sign_in() {
 
           movePage();
         }
-        // 일단 토큰만 저장
       })
       .catch(() => {
         Swal.fire({

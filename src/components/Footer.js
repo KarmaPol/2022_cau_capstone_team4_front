@@ -17,7 +17,7 @@ export default function Footer() {
     <Box
       className="footer"
       sx={{
-        backgroundColor: "grey.300",
+        backgroundColor: "grey.200",
         height: "200px",
         position: "relative",
 

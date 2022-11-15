@@ -37,20 +37,21 @@ function Commission_page() {
   // console.log(state.loggedUser);
 
   useEffect(() => {
-    const fetchPostData = async () => {
-      const response = await axios.get(`http://3.37.160.197/post/${params}`);
-      setPostData(response.data);
-      console.log(response.data);
-    };
-    const fetchAnsData = async () => {
-      const response = await axios.get(
-        `http://3.37.160.197/post/${params}/answers`
-      );
-      setAnsData(response.data);
-    };
     fetchPostData();
     fetchAnsData();
   }, []);
+
+  const fetchPostData = async () => {
+    const response = await axios.get(`http://3.37.160.197/post/${params}`);
+    setPostData(response.data);
+    console.log(response.data);
+  };
+  const fetchAnsData = async () => {
+    const response = await axios.get(
+      `http://3.37.160.197/post/${params}/answers`
+    );
+    setAnsData(response.data);
+  };
 
   const deletePost = async () => {
     const deletePostData = async () => {
@@ -76,11 +77,21 @@ function Commission_page() {
   };
 
   const selectAns = async (ID) => {
-    const config = {
-      headers: { Authorization: "Token " + loggedUser },
-    };
-    await axios.get(`http://3.37.160.197/answer/${ID}/select`, config);
-    window.location.reload();
+    Swal.fire({
+      title: "채택하시겠어요?",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      denyButtonText: "취소",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        const config = {
+          headers: { Authorization: "Token " + loggedUser },
+        };
+        axios
+          .get(`http://3.37.160.197/answer/${ID}/select`, config)
+          .then(window.location.reload());
+      }
+    });
   };
 
   const deleteAns = async (ID) => {
@@ -233,9 +244,22 @@ function Commission_page() {
               </Button>
             </Box>
             {/* 본문 제목 */}
-            <Typography variant="h5" color="black">
-              {postData.title}
-            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h5" color="black">
+                {postData.title}
+              </Typography>
+              <Typography variant="body1" color="gray" component="div" sx={{}}>
+                {postData.point}
+              </Typography>
+            </Stack>
+
             <Box
               sx={{
                 minHeight: "100px",
@@ -257,6 +281,28 @@ function Commission_page() {
                   .filter((x) => x.selected === postData.selected)
                   .map((ans) => (
                     <>
+                      {postData.selected === 2 && (
+                        <>
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <VerifiedIcon
+                              sx={{
+                                width: "40px",
+                                height: "40px",
+                              }}
+                            />
+                            <Typography variant="h5" color="black">
+                              채택완료
+                            </Typography>
+                          </Stack>
+                        </>
+                      )}
                       <Box
                         sx={{
                           display: "flex",
@@ -265,25 +311,34 @@ function Commission_page() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <Link to="/" style={{ textDecoration: "none" }}>
-                          <Stack
-                            spacing={1}
-                            direction="row"
-                            sx={{
-                              alignItems: "center",
-                            }}
-                          >
-                            {/* 크리에이터 정보 */}
-                            <Avatar></Avatar>
-                            <Typography
-                              variant="subtitle1"
-                              color="black"
-                              align="flex-end"
+                        <Stack
+                          direction="row"
+                          spacing={3}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Link to="/" style={{ textDecoration: "none" }}>
+                            <Stack
+                              spacing={1}
+                              direction="row"
+                              sx={{
+                                alignItems: "center",
+                              }}
                             >
-                              {ans.author}
-                            </Typography>
-                          </Stack>
-                        </Link>
+                              {/* 크리에이터 정보 */}
+                              <Avatar></Avatar>
+                              <Typography
+                                variant="subtitle1"
+                                color="black"
+                                align="flex-end"
+                              >
+                                {ans.author}
+                              </Typography>
+                            </Stack>
+                          </Link>
+                        </Stack>
 
                         {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
 
