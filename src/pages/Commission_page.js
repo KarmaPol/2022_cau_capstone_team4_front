@@ -22,6 +22,9 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { Children } from "react";
 import Footer from "../components/Footer";
+import ReactWaterMark from "react-watermark-component";
+import { saveAs } from "file-saver";
+import "./Commission_page.css";
 
 function Commission_page() {
   const { loggedUser, actions } = useContext(Context);
@@ -39,6 +42,9 @@ function Commission_page() {
   useEffect(() => {
     fetchPostData();
     fetchAnsData();
+    document.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+    });
   }, []);
 
   const fetchPostData = async () => {
@@ -46,7 +52,7 @@ function Commission_page() {
     setPostData(response.data);
     console.log(response.data);
   };
-  
+
   const fetchAnsData = async () => {
     const response = await axios.get(
       `http://3.37.160.197/post/${params}/answers`
@@ -116,6 +122,17 @@ function Commission_page() {
   };
 
   // 게시글 댓글 작성
+
+  const options = {
+    chunkWidth: 250,
+    chunkHeight: 250,
+    textAlign: "left",
+    textBaseline: "bottom",
+    globalAlpha: 0.2,
+    font: "30px Microsoft Yahei",
+    rotateAngle: -0.26,
+    fillStyle: "#666",
+  };
 
   return (
     <>
@@ -346,6 +363,20 @@ function Commission_page() {
                         {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
 
                         <Stack spacing={1} direction="row">
+                          {postData.selected === 2 && (
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                saveAs(ans.file_upload, "커미션이미지.png");
+                              }}
+                              sx={{
+                                width: "100px",
+                              }}
+                            >
+                              다운로드
+                            </Button>
+                          )}
+
                           {postData.selected !== 2 && (
                             <Button
                               onClick={() => {
@@ -395,8 +426,15 @@ function Commission_page() {
                       </Box>
                       <Box>
                         {/* 답변 본문 */}
-                        <img src={ans.file_upload} />
+                        <ReactWaterMark
+                          waterMarkText={ans.author}
+                          openSecurityDefense
+                          options={options}
+                        >
+                          <img className="img2" src={ans.file_upload} />
+                        </ReactWaterMark>
                       </Box>
+
                       <Comment
                         likeAvailabilty={true}
                         type={"answer"}

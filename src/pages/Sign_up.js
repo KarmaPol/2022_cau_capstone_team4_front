@@ -12,6 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Context from "../components/ContextProvider";
 import Appbar from "../components/Appbar";
 import icon from "../img/icon.png";
@@ -48,6 +49,16 @@ export default function Sign_up() {
       .then((res) => {
         console.log(res.data);
         logIn();
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "회원가입 실패",
+          text: `중복되었거나 잘못된 가입양식을 입력하였습니다`,
+          footer: "이메일은 example@example.com 형식입니다",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       });
   };
 
@@ -69,10 +80,17 @@ export default function Sign_up() {
           actions.setLoggedIn(true);
           actions.setLoggedUser(() => res.data.Token);
 
-          localStorage.setItem("Token", res.data.Token);
-          localStorage.setItem("userID", account.userID);
+          axios
+            .get(`http://3.37.160.197/user/${account.userID}`)
+            .then((res) => {
+              localStorage.setItem("userData", JSON.stringify(res.data));
+              console.log(localStorage.getItem("userData"));
+              console.log(res.data);
+              actions.setLoggedUserData(res.data);
+            });
 
-          actions.setLoggedUserData(account.userID);
+          localStorage.setItem("Token", res.data.Token);
+
           actions.setLoggedIn(true);
 
           movePage();
@@ -147,16 +165,14 @@ export default function Sign_up() {
               onChange={onChangeAccount}
             />
             <Stack width="500px" spacing={1}>
-              <Link to="/signin" style={{ textDecoration: "none" }}>
-                <Button
-                  onClick={signUp}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                >
-                  회원가입
-                </Button>
-              </Link>
+              <Button
+                onClick={signUp}
+                type="submit"
+                fullWidth
+                variant="contained"
+              >
+                회원가입
+              </Button>
             </Stack>
             <Line />
           </Stack>
