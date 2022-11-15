@@ -53,6 +53,7 @@ export default function Comment(props) {
     fetchCommentData();
   }, []);
 
+
   const fetchCommentData = async () => {
     console.log(props.id);
     const response = await axios.get(

@@ -15,7 +15,7 @@ import Appbar from "../components/Appbar";
 import "../App.css";
 import Line from "../components/Line";
 import Bulletin from "../components/Bulletin";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import mainPic from "../img/mainpagePic.png";
 import mainPic2 from "../img/mainpage2.png";
@@ -23,6 +23,8 @@ import "./MainPage.css";
 
 function MainPage() {
   const [postsData, setPostsData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPostsData = async () => {
@@ -169,7 +171,14 @@ function MainPage() {
                 ))}
               </Stack>
               <Box width="400px">
-                <Button size="small" fullWidth variant="outlined">
+                <Button
+                  onClick={() => {
+                    navigate(`/list`);
+                  }}
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                >
                   더보기
                 </Button>
               </Box>

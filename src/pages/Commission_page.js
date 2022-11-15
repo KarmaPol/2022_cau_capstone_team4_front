@@ -46,6 +46,7 @@ function Commission_page() {
     setPostData(response.data);
     console.log(response.data);
   };
+  
   const fetchAnsData = async () => {
     const response = await axios.get(
       `http://3.37.160.197/post/${params}/answers`
@@ -281,6 +282,8 @@ function Commission_page() {
                   .filter((x) => x.selected === postData.selected)
                   .map((ans) => (
                     <>
+                      {console.log(ans)}
+
                       {postData.selected === 2 && (
                         <>
                           <Stack
@@ -390,7 +393,6 @@ function Commission_page() {
                           </Button>
                         </Stack>
                       </Box>
-
                       <Box>
                         {/* 답변 본문 */}
                         <img src={ans.file_upload} />
