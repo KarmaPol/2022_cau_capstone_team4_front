@@ -44,23 +44,27 @@ export default function Comment(props) {
   const { loggedUser, actions } = useContext(Context);
 
   const [comments, setComments] = useState([]);
-  const [likes, setlikes] = useState(3);
+  const [likes, setlikes] = useState(
+    props.likeCount !== undefined ? props.likeCount : 0
+  );
   const [comment, setComment] = useState("");
   const [commentClicked, setCommnetClicked] = useState(false);
-  const [likeClicked, setLikeClicked] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(
+    props.likeAvailabilty ? props.isLiked : null
+  );
 
   useEffect(() => {
     fetchCommentData();
+    if (props.isLiked === true) {
+      setLikeClicked(true);
+    }
   }, []);
-
 
   const fetchCommentData = async () => {
     console.log(props.id);
     const response = await axios.get(
       `http://3.37.160.197/${props.type}/${props.id}/comments`
     );
-
-    console.log(response.data);
 
     setComments(response.data);
   };
@@ -89,15 +93,22 @@ export default function Comment(props) {
   };
 
   const getLike = async () => {
-    if (props.type === "answer") {
+    const config = {
+      headers: { Authorization: "Token " + loggedUser },
+    };
+    if (props.likeAvailabilty === true) {
       const response = await axios.get(
-        `http://3.37.160.197/${props.type}/${props.id}/like`
+        `http://3.37.160.197/answer/${props.id}/like`,
+        config
       );
 
       console.log(response.data);
-      setlikes(response.data.like_count);
+      props.fetchFunc();
+      likeClicked ? setlikes((ex) => ex - 1) : setlikes((ex) => ex + 1);
     }
   };
+
+  useState(() => {}, [props]);
 
   return (
     <Stack spacing={1}>
@@ -109,7 +120,7 @@ export default function Comment(props) {
             }}
             onClick={() => {
               setLikeClicked((ex) => !ex);
-              setlikes((ex) => ex + 1);
+              getLike();
             }}
           ></FavoriteBorderIcon>
         )}
@@ -120,7 +131,7 @@ export default function Comment(props) {
             }}
             onClick={() => {
               setLikeClicked((ex) => !ex);
-              setlikes((ex) => ex - 1);
+              getLike();
             }}
           ></FavoriteIcon>
         )}

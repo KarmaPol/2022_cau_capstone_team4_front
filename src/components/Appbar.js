@@ -37,6 +37,7 @@ export default function Appbar() {
         minWidth: "1000px",
         borderBottom: 0.5,
         borderColor: "grey.300",
+        zIndex: "10",
       }}
     >
       <Toolbar>

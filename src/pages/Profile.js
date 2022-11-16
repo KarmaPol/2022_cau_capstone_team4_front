@@ -18,6 +18,7 @@ import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Context from "../components/ContextProvider";
+import MyCanvas from "../components/MyCanvas";
 
 function Profile() {
   const { loggedUserData } = useContext(Context);
@@ -115,6 +116,25 @@ function Profile() {
               </Stack>
             </Stack>
             <Line />
+            <Stack spacing={2}>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                나만의 화실
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "gray",
+                }}
+              >
+                자유롭게 그릴 수 있어요
+              </Typography>
+              <MyCanvas ref1={null} load={false} qid={null} aid={null} />
+            </Stack>
           </Stack>
         </Box>
         <Box minHeight="300px" />

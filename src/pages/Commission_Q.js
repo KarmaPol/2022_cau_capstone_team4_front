@@ -22,9 +22,12 @@ import Footer from "../components/Footer";
 function Commission_Q() {
   const [commissionTitle, setTitle] = useState("");
   const [commissionTags, setTags] = useState("");
+  const [commissionPoint, setPoint] = useState(20);
   const [commissionText, setCommissiontText] = useState("");
 
-  const { loggedUser, actions } = useContext(Context);
+  console.log(commissionPoint);
+
+  const { loggedUser, loggedUserData, actions } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -48,28 +51,39 @@ function Commission_Q() {
       denyButtonText: "취소",
     }).then((res) => {
       if (res.isConfirmed) {
-        const ImgValue = localStorage.getItem("submitDrawing");
+        if (commissionPoint > loggedUserData.point) {
+          Swal.fire({
+            icon: "error",
+            title: "작성 오류",
+            text: "입력한 포인트가 보유량보다 더 많습니다!",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        } else {
+          const ImgValue = localStorage.getItem("submitDrawing");
 
-        localStorage.setItem("default", ImgValue);
+          localStorage.setItem("default", ImgValue);
 
-        const config = {
-          headers: {
-            Authorization: "Token " + loggedUser,
-          },
-        };
-
-        axios
-          .post(
-            `http://3.37.160.197/posts`,
-            {
-              title: commissionTitle,
-              content: commissionText,
-              tag: [],
-              file_upload: ImgValue,
+          const config = {
+            headers: {
+              Authorization: "Token " + loggedUser,
             },
-            config
-          )
-          .then(navigate("/list"));
+          };
+
+          axios
+            .post(
+              `http://3.37.160.197/posts`,
+              {
+                title: commissionTitle,
+                content: commissionText,
+                tag: [],
+                file_upload: ImgValue,
+                point: commissionPoint,
+              },
+              config
+            )
+            .then(navigate("/list"));
+        }
       }
     });
   }
@@ -148,6 +162,37 @@ function Commission_Q() {
                 variant="outlined"
               ></TextField>
             </Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100px",
+                }}
+              >
+                <TextField
+                  className="inputRounded2"
+                  onChange={(e) => setPoint(e.target.value)}
+                  value={commissionPoint}
+                  fullWidth
+                  id="point"
+                  name="point"
+                  label="포인트"
+                  variant="outlined"
+                ></TextField>
+              </Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "gray",
+                }}
+              >{`/ ${loggedUserData.point}`}</Typography>
+            </Stack>
             <MyEditor onChangeFunc={onChangeCommissionText} />
             <MyCanvas ref1={submitRef}></MyCanvas>
             <Button

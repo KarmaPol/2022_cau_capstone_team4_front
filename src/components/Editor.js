@@ -9,6 +9,7 @@ export default function MyEditor(props) {
     <Box
       sx={{
         width: "800px",
+        minHeight: "300px",
         justifyContent: "center",
       }}
     >

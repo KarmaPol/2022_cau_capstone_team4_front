@@ -12,6 +12,10 @@ import Profile from "./pages/Profile";
 import { ContextProvider } from "./components/ContextProvider";
 
 function App() {
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function no_console() {};
+  }
   return (
     <ContextProvider>
       <Routes>

@@ -23,7 +23,6 @@ export default function MyCanvas(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log("test", props.load);
       if (props.load) {
         console.log(props.aid);
         if (canvasRef !== undefined) {
@@ -33,7 +32,7 @@ export default function MyCanvas(props) {
               `http://3.37.160.197/answer/${props.aid}`
             );
             console.log(response.data.savedata);
-            canvasRef.current.loadSaveData(response.data.savedata, true);
+            canvasRef.current.loadSaveData(response.data.savedata, false);
           };
           fetchSaveData();
         }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -28,7 +28,7 @@ function MainPage() {
 
   useEffect(() => {
     const fetchPostsData = async () => {
-      const response = await axios.get("http://3.37.160.197/post/main");
+      const response = await axios.get("http://3.37.160.197/main");
       setPostsData(response.data);
       console.log(response);
     };
@@ -166,9 +166,9 @@ function MainPage() {
                 그림 의뢰
               </Typography>
               <Stack direction="row" spacing={5}>
-                {postsData.map((post) => (
-                  <Bulletin post={post}></Bulletin>
-                ))}
+                {Children.toArray(
+                  postsData.map((post) => <Bulletin post={post}></Bulletin>)
+                )}
               </Stack>
               <Box width="400px">
                 <Button

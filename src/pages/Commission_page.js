@@ -439,6 +439,9 @@ function Commission_page() {
                         likeAvailabilty={true}
                         type={"answer"}
                         id={ans.id}
+                        isLiked={ans.is_liked}
+                        likeCount={ans.like_count}
+                        fetchFunc={fetchAnsData}
                       ></Comment>
                       {/* 답변 글 끝 */}
                       <Box
