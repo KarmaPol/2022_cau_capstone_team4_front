@@ -27,9 +27,8 @@ import { saveAs } from "file-saver";
 import "./Commission_page.css";
 
 function Commission_page() {
-  const { loggedUser, actions } = useContext(Context);
+  const { loggedUser, loggedUserData, actions } = useContext(Context);
 
-  const [reload, setReload] = useState(false);
   const [postData, setPostData] = useState([]);
   const [ansDatas, setAnsData] = useState();
 
@@ -54,8 +53,12 @@ function Commission_page() {
   };
 
   const fetchAnsData = async () => {
+    const config = {
+      headers: { Authorization: "Token " + loggedUser },
+    };
     const response = await axios.get(
-      `http://3.37.160.197/post/${params}/answers`
+      `http://3.37.160.197/post/${params}/answers`,
+      config
     );
     setAnsData(response.data);
   };
@@ -229,37 +232,34 @@ function Commission_page() {
                 justifyContent: "space-between",
               }}
             >
-              <Link to="/" style={{ textDecoration: "none" }}>
-                <Stack
-                  spacing={1}
-                  direction="row"
-                  sx={{
-                    alignItems: "center",
-                  }}
-                >
-                  {/* 클라이언트 정보 */}
-                  <Avatar></Avatar>
-                  <Typography
-                    variant="subtitle1"
-                    color="black"
-                    align="flex-end"
-                  >
-                    {postData.author}
-                  </Typography>
-                </Stack>
-              </Link>
-
-              {/* 삭제 버튼 */}
-              <Button
-                color="error"
-                variant="contained"
-                onClick={deletePost}
+              <Stack
+                spacing={1}
+                direction="row"
                 sx={{
-                  width: "100px",
+                  alignItems: "center",
                 }}
               >
-                삭제
-              </Button>
+                {/* 클라이언트 정보 */}
+                <Avatar></Avatar>
+                <Typography variant="subtitle1" color="black" align="flex-end">
+                  {postData.author}
+                </Typography>
+              </Stack>
+
+              {/* 삭제 버튼 */}
+              {postData.selected !== 2 &&
+                loggedUserData.name === postData.author && (
+                  <Button
+                    color="error"
+                    variant="contained"
+                    onClick={deletePost}
+                    sx={{
+                      width: "100px",
+                    }}
+                  >
+                    삭제
+                  </Button>
+                )}
             </Box>
             {/* 본문 제목 */}
             <Stack
@@ -339,89 +339,92 @@ function Commission_page() {
                             alignItems: "center",
                           }}
                         >
-                          <Link to="/" style={{ textDecoration: "none" }}>
-                            <Stack
-                              spacing={1}
-                              direction="row"
-                              sx={{
-                                alignItems: "center",
-                              }}
+                          <Stack
+                            spacing={1}
+                            direction="row"
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            {/* 크리에이터 정보 */}
+                            <Avatar></Avatar>
+                            <Typography
+                              variant="subtitle1"
+                              color="black"
+                              align="flex-end"
                             >
-                              {/* 크리에이터 정보 */}
-                              <Avatar></Avatar>
-                              <Typography
-                                variant="subtitle1"
-                                color="black"
-                                align="flex-end"
-                              >
-                                {ans.author}
-                              </Typography>
-                            </Stack>
-                          </Link>
+                              {ans.author}
+                            </Typography>
+                          </Stack>
                         </Stack>
 
                         {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
 
                         <Stack spacing={1} direction="row">
-                          {postData.selected === 2 && (
-                            <Button
-                              variant="contained"
-                              onClick={() => {
-                                saveAs(ans.file_upload, "커미션이미지.png");
-                              }}
-                              sx={{
-                                width: "100px",
-                              }}
-                            >
-                              다운로드
-                            </Button>
-                          )}
-
-                          {postData.selected !== 2 && (
-                            <Button
-                              onClick={() => {
-                                selectAns(ans.id);
-                              }}
-                              variant="contained"
-                              color="success"
-                              sx={{
-                                width: "100px",
-                              }}
-                            >
-                              채택
-                            </Button>
-                          )}
-
-                          {postData.selected === 1 && (
-                            <Link
-                              to={`/answer/fix/${params}/${ans.id}`}
-                              style={{ textDecoration: "none" }}
-                            >
+                          {loggedUserData.name === postData.author &&
+                            postData.selected === 2 && (
                               <Button
-                                variant="outlined"
+                                variant="contained"
+                                onClick={() => {
+                                  saveAs(ans.file_upload, "커미션이미지.png");
+                                }}
+                                sx={{
+                                  width: "100px",
+                                }}
+                              >
+                                다운로드
+                              </Button>
+                            )}
+
+                          {loggedUserData.name === postData.author &&
+                            postData.selected !== 2 && (
+                              <Button
+                                onClick={() => {
+                                  selectAns(ans.id);
+                                }}
+                                variant="contained"
                                 color="success"
                                 sx={{
                                   width: "100px",
                                 }}
                               >
-                                보완
+                                채택
                               </Button>
-                            </Link>
-                          )}
+                            )}
 
-                          <Button
-                            color="error"
-                            variant="contained"
-                            onClick={() => {
-                              console.log(ans);
-                              deleteAns(ans.id);
-                            }}
-                            sx={{
-                              width: "100px",
-                            }}
-                          >
-                            삭제
-                          </Button>
+                          {loggedUserData.name === ans.author &&
+                            postData.selected === 1 && (
+                              <Link
+                                to={`/answer/fix/${params}/${ans.id}`}
+                                style={{ textDecoration: "none" }}
+                              >
+                                <Button
+                                  variant="outlined"
+                                  color="success"
+                                  sx={{
+                                    width: "100px",
+                                  }}
+                                >
+                                  보완
+                                </Button>
+                              </Link>
+                            )}
+                          {postData.selected !== 2 &&
+                            loggedUserData.name === ans.author && (
+                              <Button
+                                color="error"
+                                variant="contained"
+                                onClick={() => {
+                                  console.log(ans);
+                                  deleteAns(ans.id);
+                                }}
+                                sx={{
+                                  width: "100px",
+                                }}
+                              >
+                                삭제
+                              </Button>
+                            )}
                         </Stack>
                       </Box>
                       <Box>

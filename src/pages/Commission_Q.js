@@ -29,6 +29,17 @@ function Commission_Q() {
 
   const { loggedUser, loggedUserData, actions } = useContext(Context);
 
+  useEffect(() => {
+    axios
+      .get(`http://3.37.160.197/user/${loggedUserData.username}`)
+      .then((res) => {
+        localStorage.setItem("userData", JSON.stringify(res.data));
+        console.log(localStorage.getItem("userData"));
+        console.log(res.data);
+        actions.setLoggedUserData(res.data);
+      });
+  }, []);
+
   const navigate = useNavigate();
 
   console.log(loggedUser);
@@ -82,7 +93,9 @@ function Commission_Q() {
               },
               config
             )
-            .then(navigate("/list"));
+            .then(() => {
+              navigate("/list");
+            });
         }
       }
     });

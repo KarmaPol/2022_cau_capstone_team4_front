@@ -21,9 +21,20 @@ import Context from "../components/ContextProvider";
 import MyCanvas from "../components/MyCanvas";
 
 function Profile() {
-  const { loggedUserData } = useContext(Context);
+  const { loggedUserData, actions } = useContext(Context);
 
   console.log(loggedUserData);
+
+  useEffect(() => {
+    axios
+      .get(`http://3.37.160.197/user/${loggedUserData.username}`)
+      .then((res) => {
+        localStorage.setItem("userData", JSON.stringify(res.data));
+        console.log(localStorage.getItem("userData"));
+        console.log(res.data);
+        actions.setLoggedUserData(res.data);
+      });
+  }, []);
 
   return (
     <>

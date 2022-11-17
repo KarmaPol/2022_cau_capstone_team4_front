@@ -41,7 +41,7 @@ function PrintComment({ comment }) {
 }
 
 export default function Comment(props) {
-  const { loggedUser, actions } = useContext(Context);
+  const { loggedUser, loggedUserData, actions } = useContext(Context);
 
   const [comments, setComments] = useState([]);
   const [likes, setlikes] = useState(
@@ -67,6 +67,7 @@ export default function Comment(props) {
     );
 
     setComments(response.data);
+    console.log(comments);
   };
 
   const submitComment = () => {
@@ -160,17 +161,19 @@ export default function Comment(props) {
               >
                 <PrintComment comment={comment} key={comment.id}></PrintComment>
 
-                <Button
-                  size="small"
-                  color="error"
-                  variant="contained"
-                  onClick={() => deleteComment(comment.id)}
-                  sx={{
-                    width: "50px",
-                  }}
-                >
-                  삭제
-                </Button>
+                {loggedUserData === comment.id && (
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="contained"
+                    onClick={() => deleteComment(comment.id)}
+                    sx={{
+                      width: "50px",
+                    }}
+                  >
+                    삭제
+                  </Button>
+                )}
               </Box>
             </>
           ))

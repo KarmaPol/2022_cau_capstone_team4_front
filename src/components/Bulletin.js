@@ -77,8 +77,7 @@ export default function Bulletin(props) {
         </Box>
         <Box
           onClick={() => {
-            navigate(`/
-            `);
+            // navigate(`/profile/${props.post.author.username}`);
           }}
         >
           <Typography variant="body2" color="gray" component="div" sx={{}}>
