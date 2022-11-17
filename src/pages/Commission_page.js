@@ -30,7 +30,7 @@ function Commission_page() {
   const { loggedUser, loggedUserData, loggedIn, actions } = useContext(Context);
 
   const [postData, setPostData] = useState([]);
-  const [ansDatas, setAnsData] = useState();
+  const [ansDatas, setAnsData] = useState([]);
 
   const params = useParams().id;
 
@@ -254,7 +254,8 @@ function Commission_page() {
               </Stack>
 
               {/* 삭제 버튼 */}
-              {postData.selected !== 2 &&
+              {ansDatas.length === 0 &&
+                postData.selected !== 2 &&
                 loggedUserData?.name === postData.author && (
                   <Button
                     color="error"
@@ -368,7 +369,8 @@ function Commission_page() {
                         {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
 
                         <Stack spacing={1} direction="row">
-                          {loggedUserData?.name === postData.author &&
+                          {loggedIn === true &&
+                            loggedUserData.name === postData.author &&
                             postData.selected === 2 && (
                               <Button
                                 variant="contained"
@@ -383,7 +385,8 @@ function Commission_page() {
                               </Button>
                             )}
 
-                          {loggedUserData?.name === postData.author &&
+                          {loggedIn === true &&
+                            loggedUserData.name === postData.author &&
                             postData.selected !== 2 && (
                               <Button
                                 onClick={() => {
@@ -399,7 +402,8 @@ function Commission_page() {
                               </Button>
                             )}
 
-                          {loggedUserData?.name === ans.author &&
+                          {loggedIn === true &&
+                            loggedUserData.name === ans.author &&
                             postData.selected === 1 && (
                               <Link
                                 to={`/answer/fix/${params}/${ans.id}`}
@@ -417,7 +421,8 @@ function Commission_page() {
                               </Link>
                             )}
                           {postData.selected !== 2 &&
-                            loggedUserData?.name === ans.author && (
+                            loggedIn === true &&
+                            loggedUserData.name === ans.author && (
                               <Button
                                 color="error"
                                 variant="contained"
