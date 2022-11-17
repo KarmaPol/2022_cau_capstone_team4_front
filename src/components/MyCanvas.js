@@ -37,7 +37,7 @@ export default function MyCanvas(props) {
           fetchSaveData();
         }
       }
-    }, 500);
+    }, 2000);
   }, []);
 
   return (
@@ -63,9 +63,9 @@ export default function MyCanvas(props) {
           brushRadius={brushRad}
           hideGrid={true}
           lazyRadius={0}
-          loadTimeOffset={3}
+          loadTimeOffset={4}
           imgSrc={defaultImage}
-          enablePanAndZoom={true}
+          enablePanAndZoom={false}
         />
         <Line />
       </Box>
