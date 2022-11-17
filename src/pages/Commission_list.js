@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   Container,
@@ -14,6 +14,7 @@ import {
 import Appbar from "../components/Appbar";
 import "../App.css";
 import Line from "../components/Line";
+import Context from "../components/ContextProvider";
 import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
@@ -22,7 +23,8 @@ function Commission_page() {
   const [postsData, setPostsData] = useState([]);
   const [pageLimit, setPageLimit] = useState(9);
   const [currentPage, setCurrentPage] = useState(1);
-  const [load, setLoad] = useState(false);
+
+  const { loggedIn } = useContext(Context);
 
   const pageOffset = (currentPage - 1) * pageLimit;
 
@@ -36,7 +38,6 @@ function Commission_page() {
     const fetchPostsData = async () => {
       const response = await axios.get("http://3.37.160.197/posts");
       setPostsData(response.data);
-      setLoad(true);
     };
     fetchPostsData();
   }, []);
@@ -93,18 +94,13 @@ function Commission_page() {
               >
                 그림 의뢰
               </Typography>
-              <Box
-                alignSelf="flex-start"
-                sx={{
-                  alignItems: "",
-                }}
-              >
+              {loggedIn === true && (
                 <Link to="/question" style={{ textDecoration: "none" }}>
                   <Button variant="outlined" disableElevation>
                     게시글 작성
                   </Button>
                 </Link>
-              </Box>
+              )}
             </Box>
             <Grid container spacing={2}>
               <Grid container item spacing={2}>

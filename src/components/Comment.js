@@ -41,7 +41,7 @@ function PrintComment({ comment }) {
 }
 
 export default function Comment(props) {
-  const { loggedUser, loggedUserData, actions } = useContext(Context);
+  const { loggedUser, loggedUserData, loggedIn, actions } = useContext(Context);
 
   const [comments, setComments] = useState([]);
   const [likes, setlikes] = useState(
@@ -120,8 +120,10 @@ export default function Comment(props) {
               color: "grey.700",
             }}
             onClick={() => {
-              setLikeClicked((ex) => !ex);
-              getLike();
+              if (loggedIn === true) {
+                setLikeClicked((ex) => !ex);
+                getLike();
+              }
             }}
           ></FavoriteBorderIcon>
         )}
@@ -131,8 +133,10 @@ export default function Comment(props) {
               color: red[600],
             }}
             onClick={() => {
-              setLikeClicked((ex) => !ex);
-              getLike();
+              if (loggedIn === true) {
+                setLikeClicked((ex) => !ex);
+                getLike();
+              }
             }}
           ></FavoriteIcon>
         )}
@@ -142,7 +146,9 @@ export default function Comment(props) {
           sx={{
             color: "grey.700",
           }}
-          onClick={() => setCommnetClicked((ex) => !ex)}
+          onClick={() => {
+            setCommnetClicked((ex) => !ex);
+          }}
         />
         <p>{comments.length} comments</p>
       </Stack>
@@ -161,7 +167,7 @@ export default function Comment(props) {
               >
                 <PrintComment comment={comment} key={comment.id}></PrintComment>
 
-                {loggedUserData === comment.id && (
+                {loggedIn === true && loggedUserData === comment.id && (
                   <Button
                     size="small"
                     color="error"
@@ -178,7 +184,7 @@ export default function Comment(props) {
             </>
           ))
         )}
-      {commentClicked && (
+      {loggedIn === true && commentClicked && (
         <Stack spacing={3} direction="row">
           <TextField
             value={comment}

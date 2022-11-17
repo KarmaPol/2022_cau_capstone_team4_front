@@ -27,7 +27,7 @@ import { saveAs } from "file-saver";
 import "./Commission_page.css";
 
 function Commission_page() {
-  const { loggedUser, loggedUserData, actions } = useContext(Context);
+  const { loggedUser, loggedUserData, loggedIn, actions } = useContext(Context);
 
   const [postData, setPostData] = useState([]);
   const [ansDatas, setAnsData] = useState();
@@ -53,14 +53,21 @@ function Commission_page() {
   };
 
   const fetchAnsData = async () => {
-    const config = {
-      headers: { Authorization: "Token " + loggedUser },
-    };
-    const response = await axios.get(
-      `http://3.37.160.197/post/${params}/answers`,
-      config
-    );
-    setAnsData(response.data);
+    if (loggedIn === true) {
+      const config = {
+        headers: { Authorization: "Token " + loggedUser },
+      };
+      const response = await axios.get(
+        `http://3.37.160.197/post/${params}/answers`,
+        config
+      );
+      setAnsData(response.data);
+    } else {
+      const response = await axios.get(
+        `http://3.37.160.197/post/${params}/answers`
+      );
+      setAnsData(response.data);
+    }
   };
 
   const deletePost = async () => {
@@ -248,7 +255,7 @@ function Commission_page() {
 
               {/* 삭제 버튼 */}
               {postData.selected !== 2 &&
-                loggedUserData.name === postData.author && (
+                loggedUserData?.name === postData.author && (
                   <Button
                     color="error"
                     variant="contained"
@@ -361,7 +368,7 @@ function Commission_page() {
                         {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
 
                         <Stack spacing={1} direction="row">
-                          {loggedUserData.name === postData.author &&
+                          {loggedUserData?.name === postData.author &&
                             postData.selected === 2 && (
                               <Button
                                 variant="contained"
@@ -376,7 +383,7 @@ function Commission_page() {
                               </Button>
                             )}
 
-                          {loggedUserData.name === postData.author &&
+                          {loggedUserData?.name === postData.author &&
                             postData.selected !== 2 && (
                               <Button
                                 onClick={() => {
@@ -392,7 +399,7 @@ function Commission_page() {
                               </Button>
                             )}
 
-                          {loggedUserData.name === ans.author &&
+                          {loggedUserData?.name === ans.author &&
                             postData.selected === 1 && (
                               <Link
                                 to={`/answer/fix/${params}/${ans.id}`}
@@ -410,7 +417,7 @@ function Commission_page() {
                               </Link>
                             )}
                           {postData.selected !== 2 &&
-                            loggedUserData.name === ans.author && (
+                            loggedUserData?.name === ans.author && (
                               <Button
                                 color="error"
                                 variant="contained"
@@ -458,7 +465,7 @@ function Commission_page() {
                     </>
                   ))
               )}
-            {postData.selected === 0 && (
+            {loggedIn === true && postData.selected === 0 && (
               <Link to={`/answer/${params}`} style={{ textDecoration: "none" }}>
                 {/* 답변 작성은 게시물의 id값 전달 */}
                 <Button
