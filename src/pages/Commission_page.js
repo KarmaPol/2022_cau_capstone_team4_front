@@ -7,6 +7,7 @@ import {
   Box,
   Avatar,
   Grid,
+  Skeleton,
   Stack,
   TextField,
   Button,
@@ -24,11 +25,13 @@ import { Children } from "react";
 import Footer from "../components/Footer";
 import ReactWaterMark from "react-watermark-component";
 import { saveAs } from "file-saver";
+import Rank from "../components/Rank";
 import "./Commission_page.css";
 
 function Commission_page() {
   const { loggedUser, loggedUserData, loggedIn, actions } = useContext(Context);
 
+  const [loading, setLoading] = useState(false);
   const [postData, setPostData] = useState([]);
   const [ansDatas, setAnsData] = useState([]);
 
@@ -39,11 +42,11 @@ function Commission_page() {
   // console.log(state.loggedUser);
 
   useEffect(() => {
-    fetchPostData();
-    fetchAnsData();
     document.addEventListener("contextmenu", (e) => {
       e.preventDefault();
     });
+    fetchPostData();
+    fetchAnsData().then(() => setLoading(true));
   }, []);
 
   const fetchPostData = async () => {
@@ -177,313 +180,336 @@ function Commission_page() {
               width: "800px",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography
-                align="left"
-                variant="h5"
-                sx={{
-                  fontWeight: "bold",
-                }}
-              >
-                그림 의뢰
-              </Typography>
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  border: 2,
-                  padding: "5px",
-                  borderRadius: "15px",
-                  boxSizing: "border-box",
-                }}
-              >
-                {postData.selected === 0 ? (
-                  <>
-                    <UnpublishedIcon />
-                    <Typography variant="h5" color="black">
-                      미채택
-                    </Typography>
-                  </>
-                ) : postData.selected === 1 ? (
-                  <>
-                    <CheckCircleOutlineIcon />
-                    <Typography variant="h5" color="black">
-                      1차 채택
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <VerifiedIcon />
-                    <Typography variant="h5" color="black">
-                      2차 채택
-                    </Typography>
-                  </>
-                )}
-              </Stack>
-            </Box>
-            {/* 커미션 글 시작 */}
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Stack
-                spacing={1}
-                direction="row"
-                sx={{
-                  alignItems: "center",
-                }}
-              >
-                {/* 클라이언트 정보 */}
-                <Avatar></Avatar>
-                <Typography variant="subtitle1" color="black" align="flex-end">
-                  {postData.author}
-                </Typography>
-              </Stack>
-
-              {/* 삭제 버튼 */}
-              {ansDatas.length === 0 &&
-                postData.selected !== 2 &&
-                loggedUserData?.name === postData.author && (
-                  <Button
-                    color="error"
-                    variant="contained"
-                    onClick={deletePost}
-                    sx={{
-                      width: "100px",
-                    }}
-                  >
-                    삭제
-                  </Button>
-                )}
-            </Box>
-            {/* 본문 제목 */}
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h5" color="black">
-                {postData.title}
-              </Typography>
-              <Typography variant="body1" color="gray" component="div" sx={{}}>
-                {postData.point}
-              </Typography>
-            </Stack>
-
-            <Box
-              sx={{
-                minHeight: "100px",
-              }}
-            >
-              {/* 커미션 본문 */}
-              <div dangerouslySetInnerHTML={{ __html: postData.content }}></div>
-            </Box>
-            <Box>
-              <img src={postData.file_upload} />
-            </Box>
-            <Comment type={"post"} id={params} />
-            <Line />
-
-            {/* 커미션 글 끝 */}
-            {ansDatas &&
-              Children.toArray(
-                ansDatas
-                  .filter((x) => x.selected === postData.selected)
-                  .map((ans) => (
-                    <>
-                      {console.log(ans)}
-
-                      {postData.selected === 2 && (
-                        <>
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <VerifiedIcon
-                              sx={{
-                                width: "40px",
-                                height: "40px",
-                              }}
-                            />
-                            <Typography variant="h5" color="black">
-                              채택완료
-                            </Typography>
-                          </Stack>
-                        </>
-                      )}
-                      <Box
-                        sx={{
-                          display: "flex",
-                          width: "100%",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Stack
-                          direction="row"
-                          spacing={3}
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Stack
-                            spacing={1}
-                            direction="row"
-                            sx={{
-                              alignItems: "center",
-                            }}
-                          >
-                            {/* 크리에이터 정보 */}
-                            <Avatar></Avatar>
-                            <Typography
-                              variant="subtitle1"
-                              color="black"
-                              align="flex-end"
-                            >
-                              {ans.author}
-                            </Typography>
-                          </Stack>
-                        </Stack>
-
-                        {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
-
-                        <Stack spacing={1} direction="row">
-                          {loggedIn === true &&
-                            loggedUserData.name === postData.author &&
-                            postData.selected === 2 && (
-                              <Button
-                                variant="contained"
-                                onClick={() => {
-                                  saveAs(ans.file_upload, "커미션이미지.png");
-                                }}
-                                sx={{
-                                  width: "100px",
-                                }}
-                              >
-                                다운로드
-                              </Button>
-                            )}
-
-                          {loggedIn === true &&
-                            loggedUserData.name === postData.author &&
-                            postData.selected !== 2 && (
-                              <Button
-                                onClick={() => {
-                                  selectAns(ans.id);
-                                }}
-                                variant="contained"
-                                color="success"
-                                sx={{
-                                  width: "100px",
-                                }}
-                              >
-                                채택
-                              </Button>
-                            )}
-
-                          {loggedIn === true &&
-                            loggedUserData.name === ans.author &&
-                            postData.selected === 1 && (
-                              <Link
-                                to={`/answer/fix/${params}/${ans.id}`}
-                                style={{ textDecoration: "none" }}
-                              >
-                                <Button
-                                  variant="outlined"
-                                  color="success"
-                                  sx={{
-                                    width: "100px",
-                                  }}
-                                >
-                                  보완
-                                </Button>
-                              </Link>
-                            )}
-                          {postData.selected !== 2 &&
-                            loggedIn === true &&
-                            loggedUserData.name === ans.author && (
-                              <Button
-                                color="error"
-                                variant="contained"
-                                onClick={() => {
-                                  console.log(ans);
-                                  deleteAns(ans.id);
-                                }}
-                                sx={{
-                                  width: "100px",
-                                }}
-                              >
-                                삭제
-                              </Button>
-                            )}
-                        </Stack>
-                      </Box>
-                      <Box>
-                        {/* 답변 본문 */}
-                        <ReactWaterMark
-                          waterMarkText={ans.author}
-                          openSecurityDefense
-                          options={options}
-                        >
-                          <img className="img2" src={ans.file_upload} />
-                        </ReactWaterMark>
-                      </Box>
-
-                      <Comment
-                        likeAvailabilty={true}
-                        type={"answer"}
-                        id={ans.id}
-                        isLiked={ans.is_liked}
-                        likeCount={ans.like_count}
-                        fetchFunc={fetchAnsData}
-                      ></Comment>
-                      {/* 답변 글 끝 */}
-                      <Box
-                        sx={{
-                          width: "100%",
-                          borderBottom: 0.5,
-                          borderColor: "grey.300",
-                          mt: "16px",
-                        }}
-                      />
-                    </>
-                  ))
-              )}
-            {loggedIn === true && postData.selected === 0 && (
-              <Link to={`/answer/${params}`} style={{ textDecoration: "none" }}>
-                {/* 답변 작성은 게시물의 id값 전달 */}
-                <Button
-                  variant="outlined"
+            {loading ? (
+              <>
+                <Box
                   sx={{
-                    width: "100px",
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  답변작성
-                </Button>
-              </Link>
+                  <Typography
+                    align="left"
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    그림 의뢰
+                  </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      border: 2,
+                      padding: "5px",
+                      borderRadius: "15px",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    {postData.selected === 0 ? (
+                      <>
+                        <UnpublishedIcon />
+                        <Typography variant="h5" color="black">
+                          미채택
+                        </Typography>
+                      </>
+                    ) : postData.selected === 1 ? (
+                      <>
+                        <CheckCircleOutlineIcon />
+                        <Typography variant="h5" color="black">
+                          1차 채택
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <VerifiedIcon />
+                        <Typography variant="h5" color="black">
+                          2차 채택
+                        </Typography>
+                      </>
+                    )}
+                  </Stack>
+                </Box>
+                {/* 커미션 글 시작 */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Stack
+                    spacing={1}
+                    direction="row"
+                    sx={{
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* 클라이언트 정보 */}
+                    <Avatar></Avatar>
+                    <Typography variant="subtitle1" color="black">
+                      {postData.author}
+                    </Typography>
+                    <Rank cumulScore={postData.cumul_point} />
+                  </Stack>
+
+                  {/* 삭제 버튼 */}
+                  {ansDatas.length === 0 &&
+                    postData.selected !== 2 &&
+                    loggedUserData?.name === postData.author && (
+                      <Button
+                        color="error"
+                        variant="contained"
+                        onClick={deletePost}
+                        sx={{
+                          width: "100px",
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    )}
+                </Box>
+                {/* 본문 제목 */}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="h5" color="black">
+                    {postData.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="gray"
+                    component="div"
+                    sx={{}}
+                  >
+                    {postData.point}
+                  </Typography>
+                </Stack>
+
+                <Box
+                  sx={{
+                    minHeight: "100px",
+                  }}
+                >
+                  {/* 커미션 본문 */}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: postData.content }}
+                  ></div>
+                </Box>
+                <Box>
+                  <img src={postData.file_upload} />
+                </Box>
+                <Comment type={"post"} id={params} />
+                <Line />
+
+                {/* 커미션 글 끝 */}
+                {ansDatas &&
+                  Children.toArray(
+                    ansDatas
+                      .filter((x) => x.selected === postData.selected)
+                      .map((ans) => (
+                        <>
+                          {console.log(ans)}
+
+                          {postData.selected === 2 && (
+                            <>
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <VerifiedIcon
+                                  sx={{
+                                    width: "40px",
+                                    height: "40px",
+                                  }}
+                                />
+                                <Typography variant="h5" color="black">
+                                  채택완료
+                                </Typography>
+                              </Stack>
+                            </>
+                          )}
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Stack
+                              direction="row"
+                              spacing={3}
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Stack
+                                spacing={1}
+                                direction="row"
+                                sx={{
+                                  alignItems: "center",
+                                }}
+                              >
+                                {/* 크리에이터 정보 */}
+                                <Avatar></Avatar>
+                                <Typography variant="subtitle1" color="black">
+                                  {ans.author}
+                                </Typography>
+                                <Rank cumulScore={ans.cumul_point} />
+                              </Stack>
+                            </Stack>
+
+                            {/* 채택 버튼 -> 추후에 클라이언트만 권한 부여 */}
+
+                            <Stack spacing={1} direction="row">
+                              {loggedIn === true &&
+                                loggedUserData.name === postData.author &&
+                                postData.selected === 2 && (
+                                  <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                      saveAs(
+                                        ans.file_upload,
+                                        "커미션이미지.png"
+                                      );
+                                    }}
+                                    sx={{
+                                      width: "100px",
+                                    }}
+                                  >
+                                    다운로드
+                                  </Button>
+                                )}
+
+                              {loggedIn === true &&
+                                loggedUserData.name === postData.author &&
+                                postData.selected !== 2 && (
+                                  <Button
+                                    onClick={() => {
+                                      selectAns(ans.id);
+                                    }}
+                                    variant="contained"
+                                    color="success"
+                                    sx={{
+                                      width: "100px",
+                                    }}
+                                  >
+                                    채택
+                                  </Button>
+                                )}
+
+                              {loggedIn === true &&
+                                loggedUserData.name === ans.author &&
+                                postData.selected === 1 && (
+                                  <Link
+                                    to={`/answer/fix/${params}/${ans.id}`}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    <Button
+                                      variant="outlined"
+                                      color="success"
+                                      sx={{
+                                        width: "100px",
+                                      }}
+                                    >
+                                      보완
+                                    </Button>
+                                  </Link>
+                                )}
+                              {postData.selected !== 2 &&
+                                loggedIn === true &&
+                                loggedUserData.name === ans.author && (
+                                  <Button
+                                    color="error"
+                                    variant="contained"
+                                    onClick={() => {
+                                      console.log(ans);
+                                      deleteAns(ans.id);
+                                    }}
+                                    sx={{
+                                      width: "100px",
+                                    }}
+                                  >
+                                    삭제
+                                  </Button>
+                                )}
+                            </Stack>
+                          </Box>
+                          <Box>
+                            {/* 답변 본문 */}
+                            <ReactWaterMark
+                              waterMarkText={ans.author}
+                              openSecurityDefense
+                              options={options}
+                            >
+                              <img className="img2" src={ans.file_upload} />
+                            </ReactWaterMark>
+                          </Box>
+
+                          <Comment
+                            likeAvailabilty={true}
+                            type={"answer"}
+                            id={ans.id}
+                            isLiked={ans.is_liked}
+                            likeCount={ans.like_count}
+                            fetchFunc={fetchAnsData}
+                          ></Comment>
+                          {/* 답변 글 끝 */}
+                          <Box
+                            sx={{
+                              width: "100%",
+                              borderBottom: 0.5,
+                              borderColor: "grey.300",
+                              mt: "16px",
+                            }}
+                          />
+                        </>
+                      ))
+                  )}
+                {loggedIn === true && postData.selected === 0 && (
+                  <Link
+                    to={`/answer/${params}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {/* 답변 작성은 게시물의 id값 전달 */}
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        width: "100px",
+                      }}
+                    >
+                      답변작성
+                    </Button>
+                  </Link>
+                )}
+                <Box minHeight="100px" />
+              </>
+            ) : (
+              <>
+                <Skeleton variant="text" height={100} />
+                <Skeleton variant="circular" width={100} height={100} />
+                <Skeleton variant="rounded" width={800} height={300} />
+                <Skeleton variant="rounded" width={800} height={300} />
+              </>
             )}
-            <Box minHeight="100px" />
+            {/* 로딩 스켈레톤 */}
           </Stack>
         </Box>
         <Box minHeight="300px" />

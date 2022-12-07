@@ -13,6 +13,7 @@ import Context from "./ContextProvider";
 import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { orange, red } from "@mui/material/colors";
+import { motion } from "framer-motion";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "../App.css";
 
@@ -114,42 +115,58 @@ export default function Comment(props) {
   return (
     <Stack spacing={1}>
       <Stack spacing={1} direction="row">
-        {props.likeAvailabilty && !likeClicked && (
-          <FavoriteBorderIcon
+        <motion.div
+          className={"bulletin"}
+          whileTap={{
+            scale: 0.9,
+            opacity: 0.6,
+          }}
+        >
+          {props.likeAvailabilty && !likeClicked && (
+            <FavoriteBorderIcon
+              sx={{
+                color: "grey.700",
+              }}
+              onClick={() => {
+                if (loggedIn === true) {
+                  setLikeClicked((ex) => !ex);
+                  getLike();
+                }
+              }}
+            ></FavoriteBorderIcon>
+          )}
+          {props.likeAvailabilty && likeClicked && (
+            <FavoriteIcon
+              sx={{
+                color: red[600],
+              }}
+              onClick={() => {
+                if (loggedIn === true) {
+                  setLikeClicked((ex) => !ex);
+                  getLike();
+                }
+              }}
+            ></FavoriteIcon>
+          )}
+        </motion.div>
+
+        {props.likeAvailabilty && <p>{likes} likes</p>}
+        <motion.div
+          className={"bulletin"}
+          whileTap={{
+            scale: 0.9,
+            opacity: 0.6,
+          }}
+        >
+          <CommentIcon
             sx={{
               color: "grey.700",
             }}
             onClick={() => {
-              if (loggedIn === true) {
-                setLikeClicked((ex) => !ex);
-                getLike();
-              }
+              setCommnetClicked((ex) => !ex);
             }}
-          ></FavoriteBorderIcon>
-        )}
-        {props.likeAvailabilty && likeClicked && (
-          <FavoriteIcon
-            sx={{
-              color: red[600],
-            }}
-            onClick={() => {
-              if (loggedIn === true) {
-                setLikeClicked((ex) => !ex);
-                getLike();
-              }
-            }}
-          ></FavoriteIcon>
-        )}
-
-        {props.likeAvailabilty && <p>{likes} likes</p>}
-        <CommentIcon
-          sx={{
-            color: "grey.700",
-          }}
-          onClick={() => {
-            setCommnetClicked((ex) => !ex);
-          }}
-        />
+          />
+        </motion.div>
         <p>{comments.length} comments</p>
       </Stack>
 

@@ -75,7 +75,7 @@ function Profile() {
                 fontWeight: "bold",
               }}
             >
-              프로필
+              마이페이지
             </Typography>
             <Stack direction="row" spacing={3}>
               <Avatar sx={{ width: 140, height: 140 }} />

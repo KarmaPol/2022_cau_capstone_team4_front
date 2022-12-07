@@ -11,5 +11,14 @@
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
+}
 
+.imgHOF {
+    width: 30px;
+    height: 30px;
+}
+
+.box {
+    display: flex;
+    cursor : pointer;
 }

@@ -20,6 +20,7 @@ import Footer from "../components/Footer";
 import mainPic from "../img/mainpagePic.png";
 import mainPic2 from "../img/mainpage2.png";
 import "./MainPage.css";
+import { motion } from "framer-motion";
 
 function MainPage() {
   const [postsData, setPostsData] = useState([]);
@@ -79,8 +80,17 @@ function MainPage() {
               >
                 {`내 아이디어를\n멋진 그림으로`}
               </Typography>
-
-              <img src={mainPic}></img>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.5,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }}
+              >
+                <img src={mainPic}></img>
+              </motion.div>
             </Stack>
           </Box>
         </Box>
@@ -112,8 +122,19 @@ function MainPage() {
                 alignItems: "center",
               }}
             >
-              <img src={mainPic2}></img>
-
+              <Box width="350px" height="450px">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 1,
+                    ease: [0, 0.71, 0.2, 1.01],
+                  }}
+                >
+                  <img src={mainPic2}></img>
+                </motion.div>
+              </Box>
               <Typography
                 variant="h3"
                 color="black"

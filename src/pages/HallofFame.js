@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
+  Container,
   Typography,
   Box,
   Pagination,
+  Avatar,
   Grid,
   Stack,
-  Skeleton,
-  Checkbox,
-  FormControlLabel,
+  TextField,
   Button,
 } from "@mui/material";
 import Appbar from "../components/Appbar";
@@ -19,16 +19,12 @@ import Bulletin from "../components/Bulletin";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
-function Commission_page() {
+function HallofFame() {
   const [postsData, setPostsData] = useState([]);
-  const [allPostData, setAllPostData] = useState([]);
-  const [unfinishedPostData, setUnfinishedPostData] = useState([]);
   const [pageLimit, setPageLimit] = useState(9);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { loggedIn } = useContext(Context);
-
-  const [isChecked, setCheck] = useState(false);
 
   const pageOffset = (currentPage - 1) * pageLimit;
 
@@ -38,35 +34,12 @@ function Commission_page() {
     setCurrentPage(nextPage);
   };
 
-  const onChangeCheckbox = () => {
-    setCheck((ex) => !ex);
-  };
-
-  useEffect(() => {
-    setCurrentPage(1);
-    if (isChecked) {
-      setPostsData(unfinishedPostData);
-
-      console.log(currentPage);
-    } else {
-      setPostsData(allPostData);
-    }
-  }, [isChecked]);
-
-  useEffect(() => {}, [currentPage]);
-
   useEffect(() => {
     const fetchPostsData = async () => {
-      const response = await axios.get("http://3.37.160.197/posts");
+      const response = await axios.get("http://3.37.160.197/answer/rank");
       setPostsData(response.data);
-
-      return response.data;
     };
-    fetchPostsData().then((res) => {
-      console.log(res);
-      setAllPostData(res);
-      setUnfinishedPostData(res.filter((post) => post.selected === 0));
-    });
+    fetchPostsData();
   }, []);
 
   return (
@@ -119,31 +92,18 @@ function Commission_page() {
                   alignSelf: "start",
                 }}
               >
-                그림 의뢰
+                명예의 전당
               </Typography>
-              <Stack direction="row" spacing={1}>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={isChecked} onChange={onChangeCheckbox} />
-                  }
-                  label="미채택 게시글만 보기"
-                />
-                {loggedIn === true && (
-                  <Link to="/question" style={{ textDecoration: "none" }}>
-                    <Button variant="outlined" disableElevation>
-                      게시글 작성
-                    </Button>
-                  </Link>
-                )}
-              </Stack>
             </Box>
             <Grid container spacing={2}>
               <Grid container item spacing={2}>
-                {postsData.slice(pageOffset, pageOffset + 3).map((post) => (
-                  <Grid key={post.id} item>
-                    <Bulletin post={post}></Bulletin>
-                  </Grid>
-                ))}
+                {postsData
+                  .slice(pageOffset, pageOffset + 3)
+                  .map((post, idx) => (
+                    <Grid key={post.id} item>
+                      <Bulletin post={post} ranking={idx}></Bulletin>
+                    </Grid>
+                  ))}
               </Grid>
               <Grid container item spacing={2}>
                 {postsData.slice(pageOffset + 3, pageOffset + 6).map((post) => (
@@ -160,18 +120,6 @@ function Commission_page() {
                 ))}
               </Grid>
             </Grid>
-            <Line />
-
-            <Pagination
-              page={currentPage}
-              count={
-                postsData.length % pageLimit === 0
-                  ? parseInt(postsData.length / pageLimit)
-                  : parseInt(postsData.length / pageLimit) + 1
-              }
-              shape="rounded"
-              onChange={(e, value) => changePage(value)}
-            />
           </Stack>
         </Box>
         <Box minHeight="300px" />
@@ -181,4 +129,4 @@ function Commission_page() {
   );
 }
 
-export default Commission_page;
+export default HallofFame;

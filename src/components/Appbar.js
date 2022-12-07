@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   AppBar,
   Typography,
@@ -17,6 +17,11 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Appbar() {
   const { loggedIn, loggedUser, loggedUserData, actions } = useContext(Context);
+  const [search, setSearch] = useState("");
+
+  function onChangeSearch(_text) {
+    setSearch(_text);
+  }
 
   function logout() {
     localStorage.clear();
@@ -27,6 +32,12 @@ export default function Appbar() {
   }
 
   const navigate = useNavigate();
+
+  const onSubmitEnter = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/search?keyword=${search}`);
+    }
+  };
 
   return (
     <AppBar
@@ -68,14 +79,16 @@ export default function Appbar() {
               </Link>
             </Grid>
             <Grid item xs>
-              <Typography
-                variant="h6"
-                color="black"
-                component="div"
-                align="center"
-              >
-                명예의전당
-              </Typography>
+              <Link to="/halloffame" style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="h6"
+                  color="black"
+                  component="div"
+                  align="center"
+                >
+                  명예의전당
+                </Typography>
+              </Link>
             </Grid>
             <Grid item xs>
               <Typography
@@ -92,7 +105,10 @@ export default function Appbar() {
                 <TextField
                   className="inputRounded"
                   placeholder="검색"
+                  value={search}
+                  onChange={(e) => onChangeSearch(e.target.value)}
                   // fullWidth
+                  onKeyDown={onSubmitEnter}
                   size="small"
                 ></TextField>
               </Box>
@@ -133,7 +149,6 @@ export default function Appbar() {
                     </Button>
                   </Link>
                 )}
-                {/*  */}
               </Stack>
             </Grid>
           </Grid>

@@ -9,6 +9,8 @@ import Sign_up from "./pages/Sign_up";
 import MainPage from "./pages/MainPage";
 import Commission_A_fix from "./pages/Commission_A_fix";
 import Profile from "./pages/Profile";
+import HallofFame from "./pages/HallofFame";
+import Search_page from "./pages/Search_page";
 import { ContextProvider } from "./components/ContextProvider";
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
         <Route path="/signin" element={<Sign_in />} />
         <Route path="/signup" element={<Sign_up />} />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/halloffame" element={<HallofFame />} />
+        <Route path="/search" element={<Search_page />} />
       </Routes>
     </ContextProvider>
   );

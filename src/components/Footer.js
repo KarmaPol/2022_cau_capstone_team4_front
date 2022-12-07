@@ -20,18 +20,19 @@ export default function Footer() {
         backgroundColor: "grey.200",
         height: "200px",
         position: "relative",
+        boxSizing: "border-box",
 
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        alignItems: "center",
+        padding: "20px",
       }}
       component="footer"
     >
       <Box
         sx={{
           display: "flex",
-          width: "1000px",
+          // width: "1000px",
           justifyContent: "flex-end",
         }}
       >
