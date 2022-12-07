@@ -51,7 +51,7 @@ function Search_page() {
       setPostsData(response.data);
     };
     fetchPostsData();
-  }, []);
+  }, [location]);
 
   return (
     <>
